@@ -10,7 +10,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Definimos las variables de texto e imágenes que estaban en el notebook
+# Definimos las variables de texto e imágenes (sin cambios)
 main_title = "Evolución del Volumen de la Producción Científica"
 
 # --- Sección 1: Descripción General ---
@@ -64,111 +64,115 @@ def display_image(path, caption):
     if not os.path.exists(path):
         st.warning(f"⚠️ Imagen no encontrada en: {path}. Asegúrate de que el directorio 'assets/images/' exista y contenga las imágenes.")
         st.info(f"Placeholder para: {caption}")
-        st.image("https://placehold.co/600x460/cccccc/333333?text=IMAGEN+FALTANTE", caption=caption, use_container_width="auto")
+        st.image("https://placehold.co/600x460/cccccc/333333?text=IMAGEN+FALTANTE", caption=caption, use_column_width="auto")
     else:
-        st.image(path, caption=caption, use_container_width="auto")
+        st.image(path, caption=caption, use_column_width="auto")
 
 # ----------------------------------------------------
-# APLICACIÓN PRINCIPAL
+# APLICACIÓN PRINCIPAL (DISEÑO MEJORADO)
 # ----------------------------------------------------
 
 st.title(main_title)
 st.markdown("---")
 
 
-# SECCIÓN 1: Descripción General
-st.header(f"1. {sec_one_title}")
+# --- Bloque de Métricas Resumen ---
+st.header("Resumen Ejecutivo")
+metric_col1, metric_col2, metric_col3, metric_col4 = st.columns(4)
 
-# Layout para la primera sección
-col1_1, col1_2 = st.columns([1, 1])
+with metric_col1:
+    st.metric("Documentos Totales", "6,153", delta="Publicados hasta 2024")
+with metric_col2:
+    st.metric("Citas Promedio (Global)", "22.14", delta_color="inverse")
+with metric_col3:
+    st.metric("Tasa de Crecimiento Anual", "8.88%", delta="Alta")
+with metric_col4:
+    st.metric("Colaboración Internacional", "56%", delta="Sólida")
 
-with st.container():
-    st.markdown(f"**{sec_one_text1}**")
+st.markdown("---")
 
-    # Fila 2: Texto y Fig. 1
-    col2_1, col2_2 = st.columns([1, 1])
-    with col2_1:
+# --- Bloque Principal con Pestañas (Tabs) ---
+tab1, tab2, tab3 = st.tabs([f"1. {sec_one_title}", f"2. {sec_two_title}", f"3. {sec_three_title}"])
+
+# =========================================================================
+# PESTAÑA 1: DESCRIPCIÓN GENERAL
+# =========================================================================
+with tab1:
+    st.subheader("Análisis de la Colección Global vs. Sin Grandes Colaboraciones")
+
+    # Fila 1: Descripción Inicial y Fig. 1
+    col1, col2 = st.columns([0.6, 1.4])
+    with col1:
+        st.markdown(f"**{sec_one_text1}**")
         st.markdown(sec_one_text2)
-    with col2_2:
+    with col2:
         display_image(image_one_path, image_one_caption)
 
-    # Fila 3: Fig. 2 y Texto (Nota: Invertimos el orden para coincidir con la apariencia del notebook si es posible)
-    col3_1, col3_2 = st.columns([1, 1])
-    with col3_1:
-        # Se incluye el margen superior para replicar la alineación visual del notebook
-        st.markdown(
-            f"""
-            <style>
-            .margin-top-90 {{
-                margin-top: 50px; /* Ajuste para espacio visual */
-            }}
-            </style>
-            <div class="margin-top-90">
-            {display_image(image_two_path, image_two_caption)}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+    st.markdown("---")
 
-    with col3_2:
-        st.markdown(sec_one_text3.replace('<br />', '\n\n')) # Reemplazar <br /> por doble salto de línea en Markdown
-
-    # Fila 4: Texto final
-    st.markdown(sec_one_text4)
-
-st.markdown("---")
-
-# SECCIÓN 2: Producción Anual
-st.header(f"2. {sec_two_title}")
-
-# Layout para la segunda sección
-col4_1, col4_2 = st.columns([1, 1])
-with col4_1:
-    # Simula el margen superior de la imagen
-    st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
-    display_image(image_three_path, image_three_caption)
-
-with col4_2:
-    st.markdown(sec_two_text1)
-    st.markdown(sec_two_text2)
-
-# Fila 5: Texto y Fig. 4
-col5_1, col5_2 = st.columns([1, 1])
-with col5_1:
-    st.markdown(sec_two_text3.replace('<br />', '\n\n'))
-with col5_2:
-    display_image(image_four_path, image_four_caption)
-
-# Fila 6: Fig. 5 (centrada/ancho completo)
-st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
-st.markdown("---")
-display_image(image_five_path, image_five_caption)
+    # Fila 2: Análisis Detallado (Texto y Fig. 2)
+    col3, col4 = st.columns([1.4, 0.6])
+    with col3:
+        st.markdown("### Colección Principal (Artículos y Reviews, Sin Grandes Colaboraciones)")
+        st.markdown(sec_one_text3)
+        st.markdown(sec_one_text4)
+    with col4:
+        display_image(image_two_path, image_two_caption)
 
 
-# SECCIÓN 3: Producción en Revistas JCR
-st.header(f"3. {sec_three_title}")
+# =========================================================================
+# PESTAÑA 2: PRODUCCIÓN ANUAL
+# =========================================================================
+with tab2:
+    st.subheader("Evolución de la Productividad a lo largo del tiempo")
 
-# Layout para la tercera sección
-col6_1, col6_2 = st.columns([1, 1.4])
-with col6_1:
-    st.markdown(sec_three_text1)
+    # Fila 1: Fig. 3 (Evolución) y explicación del pico
+    col1, col2 = st.columns([1.4, 0.6])
+    with col1:
+        display_image(image_three_path, image_three_caption)
+    with col2:
+        st.markdown(sec_two_text1)
+        st.markdown(f"**Nota sobre el pico de 2002:**")
+        st.info(sec_two_text2)
 
-with col6_2:
-    display_image(image_six_path, image_six_caption)
+    st.markdown("---")
+    st.subheader("Producción Ajustada por Investigador")
+    st.markdown(sec_two_text3)
 
-# Fila 8: Tabla 1 y Texto
-col7_1, col7_2 = st.columns([1, 1.4])
-with col7_1:
-    display_image(image_seven_path, image_seven_caption)
-with col7_2:
-    st.markdown(sec_three_text2)
+    # Fila 2: Fig. 4 y Fig. 5 (Producción por Investigador)
+    col3, col4 = st.columns(2)
+    with col3:
+        display_image(image_four_path, image_four_caption)
+    with col4:
+        display_image(image_five_path, image_five_caption)
 
-# Fila 9: Ley de Bradford (Texto y Fig. 7)
-col8_1, col8_2 = st.columns([1, 1])
-with col8_1:
-    st.markdown(sec_three_text3.replace('<br />', '\n\n'))
-with col8_2:
-    display_image(image_eight_path, image_eight_caption)
+
+# =========================================================================
+# PESTAÑA 3: PRODUCCIÓN EN REVISTAS JCR
+# =========================================================================
+with tab3:
+    st.subheader("Análisis de las Fuentes de Publicación")
+
+    # Fila 1: Texto de Revistas y Fig. 6 (Top 20 Revistas)
+    col1, col2 = st.columns([0.6, 1.4])
+    with col1:
+        st.markdown(sec_three_text1)
+        st.markdown(sec_three_text2)
+    with col2:
+        display_image(image_six_path, image_six_caption)
+
+    st.markdown("---")
+    st.subheader("Distribución por Cuartil y Ley de Bradford")
+
+    # Fila 2: Fig. 7 (Ley de Bradford) y Tabla 1
+    col3, col4 = st.columns([1, 1])
+    with col3:
+        st.markdown(sec_three_text3)
+        display_image(image_eight_path, image_eight_caption)
+    with col4:
+        # Se pone la Tabla 1 al lado del texto para mejor comparación
+        st.markdown("### Tabla de Distribución (Referencia)")
+        display_image(image_seven_path, image_seven_caption)
 
 # ----------------------------------------------------
 # MENÚ DE NAVEGACIÓN (Simulando el final del notebook)
@@ -176,28 +180,28 @@ with col8_2:
 
 st.markdown("""
 ---
-## Navegación
-Selecciona la sección del reporte a la que deseas ir:
+## 📄 Navegación Rápida a Otras Secciones
 """)
 
 # Creamos una cuadrícula para simular las "cards" de navegación
 nav_col1, nav_col2, nav_col3, nav_col4 = st.columns(4)
 
 # Usamos st.page_link para simular el acceso a las otras secciones (requiere que los archivos existan)
+# NOTA: st.page_link solo funciona si se ejecuta con 'streamlit run' en modo multipágina
 with nav_col1:
-    st.subheader(sec_five_title2)
+    st.markdown(f"**{sec_five_title2}**")
     st.page_link("seccion_2.py", label="Ir a Sección 2", icon="📈")
 
 with nav_col2:
-    st.subheader(sec_five_title3)
+    st.markdown(f"**{sec_five_title3}**")
     st.page_link("seccion_3.py", label="Ir a Sección 3", icon="🤝")
 
 with nav_col3:
-    st.subheader(sec_five_title4)
+    st.markdown(f"**{sec_five_title4}**")
     st.page_link("seccion_4.py", label="Ir a Sección 4", icon="📚")
 
 with nav_col4:
-    st.subheader(sec_five_title5)
+    st.markdown(f"**{sec_five_title5}**")
     st.page_link("seccion_5.py", label="Ir a Sección 5", icon="🌍")
 
 st.markdown("---")
