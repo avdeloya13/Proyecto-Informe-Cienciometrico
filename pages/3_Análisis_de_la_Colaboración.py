@@ -1,6 +1,4 @@
-# Archivo: seccion_3.py
-# Este archivo contiene el contenido de la "Sección 3: Análisis de la Colaboración",
-# adaptado de tu notebook.
+#SECCION 3
 
 import streamlit as st
 import os
@@ -52,9 +50,9 @@ def display_image(path, caption):
     if not os.path.exists(path):
         st.warning(f"⚠️ Imagen no encontrada en: {path}. Asegúrate de que el directorio 'assets/images/' exista y contenga las imágenes.")
         st.info(f"Placeholder para: {caption}")
-        st.image("https://placehold.co/600x460/cccccc/333333?text=IMAGEN+FALTANTE", caption=caption, use_column_width="auto")
+        st.image("https://placehold.co/600x460/cccccc/333333?text=IMAGEN+FALTANTE", caption=caption, use_container_width="auto")
     else:
-        st.image(path, caption=caption, use_column_width="auto")
+        st.image(path, caption=caption, use_container_width="auto")
 
 
 # ----------------------------------------------------
@@ -134,36 +132,3 @@ with tab3:
     # Fila 2: Tabla 2 (Colaboración por País)
     st.info("La siguiente tabla resume la colaboración con los principales países, destacando el número de instituciones colaboradoras y autores.")
     display_image(image_four_path, image_four_caption)
-
-
-# ----------------------------------------------------
-# MENÚ DE NAVEGACIÓN
-# ----------------------------------------------------
-
-st.markdown("""
----
-## 📄 Navegación Rápida a Otras Secciones
-""")
-
-# Creamos una cuadrícula para simular las "cards" de navegación
-nav_col1, nav_col2, nav_col3, nav_col4 = st.columns(4)
-
-# Usamos st.page_link para simular el acceso a las otras secciones
-with nav_col1:
-    st.markdown(f"**{sec_nav_title1}**")
-    st.page_link("seccion_1.py", label="Ir a Sección 1", icon="📊")
-
-with nav_col2:
-    st.markdown(f"**{sec_nav_title2}**")
-    st.page_link("seccion_2.py", label="Ir a Sección 2", icon="📈")
-
-with nav_col3:
-    st.markdown(f"**{sec_nav_title4}**")
-    st.page_link("seccion_4.py", label="Ir a Sección 4", icon="📚")
-
-with nav_col4:
-    st.markdown(f"**{sec_nav_title5}**")
-    st.page_link("seccion_5.py", label="Ir a Sección 5", icon="🌍")
-
-st.markdown("---")
-st.caption("Footer: © ICN Reportes Cienciométricos. Contacto: [Email] | Síguenos en Redes Sociales.")

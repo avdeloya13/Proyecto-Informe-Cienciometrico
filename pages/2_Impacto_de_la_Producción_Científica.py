@@ -1,3 +1,5 @@
+#SECCION 2
+
 import streamlit as st
 import os
 
@@ -51,9 +53,9 @@ def display_image(path, caption):
     if not os.path.exists(path):
         st.warning(f"⚠️ Imagen no encontrada en: {path}. Asegúrate de que el directorio 'assets/images/' exista y contenga las imágenes.")
         st.info(f"Placeholder para: {caption}")
-        st.image("https://placehold.co/600x460/cccccc/333333?text=IMAGEN+FALTANTE", caption=caption, use_column_width="auto")
+        st.image("https://placehold.co/600x460/cccccc/333333?text=IMAGEN+FALTANTE", caption=caption, use_container_width="auto")
     else:
-        st.image(path, caption=caption, use_column_width="auto")
+        st.image(path, caption=caption, use_container_width="auto")
 
 
 # ----------------------------------------------------
@@ -146,38 +148,3 @@ with tab3:
         display_image(image_four_path, image_four_caption)
     with col4:
         display_image(image_five_path, image_five_caption)
-
-
-# ----------------------------------------------------
-# MENÚ DE NAVEGACIÓN
-# ----------------------------------------------------
-
-st.markdown("""
----
-## 📄 Navegación Rápida a Otras Secciones
-""")
-
-# Creamos una cuadrícula para simular las "cards" de navegación
-nav_col1, nav_col2, nav_col3, nav_col4 = st.columns(4)
-
-# Usamos st.page_link para simular el acceso a las otras secciones
-# NOTA: En una aplicación real, el índice 1 (seccion_1.py) es la página principal (Home)
-
-with nav_col1:
-    st.markdown(f"**{sec_five_title1}**")
-    st.page_link("seccion_1.py", label="Ir a Sección 1", icon="📊")
-
-with nav_col2:
-    st.markdown(f"**{sec_five_title3}**")
-    st.page_link("seccion_3.py", label="Ir a Sección 3", icon="🤝")
-
-with nav_col3:
-    st.markdown(f"**{sec_five_title4}**")
-    st.page_link("seccion_4.py", label="Ir a Sección 4", icon="📚")
-
-with nav_col4:
-    st.markdown(f"**{sec_five_title5}**")
-    st.page_link("seccion_5.py", label="Ir a Sección 5", icon="🌍")
-
-st.markdown("---")
-st.caption("Footer: © ICN Reportes Cienciométricos. Contacto: [Email] | Síguenos en Redes Sociales.")

@@ -1,3 +1,5 @@
+#SECCION 4
+
 import streamlit as st
 import os
 
@@ -45,9 +47,9 @@ def display_image(path, caption):
     if not os.path.exists(path):
         st.warning(f"⚠️ Imagen no encontrada en: {path}. Asegúrate de que el directorio 'assets/images/' exista y contenga las imágenes.")
         st.info(f"Placeholder para: {caption}")
-        st.image("https://placehold.co/600x460/cccccc/333333?text=IMAGEN+FALTANTE", caption=caption, use_column_width="auto")
+        st.image("https://placehold.co/600x460/cccccc/333333?text=IMAGEN+FALTANTE", caption=caption, use_container_width="auto")
     else:
-        st.image(path, caption=caption, use_column_width="auto")
+        st.image(path, caption=caption, use_container_width="auto")
 
 
 # ----------------------------------------------------
@@ -123,36 +125,3 @@ with tab3:
     st.markdown("---")
     st.caption("Los clústeres identificados corresponden a la estructura de investigación del ICN: Física Teórica, Astrofísica y Cosmología, Materiales y Nanociencias, y Biofísica.")
 
-
-# ----------------------------------------------------
-# MENÚ DE NAVEGACIÓN
-# ----------------------------------------------------
-
-st.markdown("""
----
-## 📄 Navegación Rápida a Otras Secciones
-""")
-
-# Creamos una cuadrícula para simular las "cards" de navegación
-nav_col1, nav_col2, nav_col3, nav_col4 = st.columns(4)
-
-# Usamos st.page_link para simular el acceso a las otras secciones
-# Se incluye el enlace a la Sección 5 (ODS) aunque el archivo seccion_5.py aún no se haya creado.
-with nav_col1:
-    st.markdown(f"**{sec_nav_title1}**")
-    st.page_link("seccion_1.py", label="Ir a Sección 1", icon="📊")
-
-with nav_col2:
-    st.markdown(f"**{sec_nav_title2}**")
-    st.page_link("seccion_2.py", label="Ir a Sección 2", icon="📈")
-
-with nav_col3:
-    st.markdown(f"**{sec_nav_title3}**")
-    st.page_link("seccion_3.py", label="Ir a Sección 3", icon="🤝")
-
-with nav_col4:
-    st.markdown(f"**{sec_nav_title5}**")
-    st.page_link("seccion_5.py", label="Ir a Sección 5", icon="🌍")
-
-st.markdown("---")
-st.caption("Footer: © ICN Reportes Cienciométricos. Contacto: [Email] | Síguenos en Redes Sociales.")
