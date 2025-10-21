@@ -8,7 +8,7 @@ st.markdown("---")
 st.markdown("""
 **Son presentados los resultados de un estudio cienciométrico enfocado en el análisis de la producción científica con mayor visibilidad internacional generada por investigadores del Instituto de Ciencias Nucleares (ICN) de la Universidad Nacional Autónoma de México (UNAM), entendida como la producción indizada en Web of Science (WoS).**
 
-### Contexto Institucional
+### Sobre la Institución
 El ICN cuenta con una trayectoria académica de más de cinco décadas, evolucionando desde su fundación como Laboratorio Nuclear en 1967 hasta adoptar su nombre actual en 1988. Su quehacer científico abarca históricamente áreas fundamentales como **física nuclear, altas energías, gravitación, nanomateriales, astrofísica, óptica cuántica** y enfoques interdisciplinarios.
 
 ### Objetivos y Metodología del Estudio
