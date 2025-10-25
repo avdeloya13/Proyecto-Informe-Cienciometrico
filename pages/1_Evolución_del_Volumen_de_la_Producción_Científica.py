@@ -1,6 +1,7 @@
 #SECCION 1
 
 import streamlit as st
+import lmstudio as lms
 import os
 
 # --- Configuración de la Página (Título, Ícono, Layout) ---
@@ -68,15 +69,10 @@ def display_image(path, caption):
     else:
         st.image(path, caption=caption, width="stretch")
 
-# ----------------------------------------------------
-# APLICACIÓN PRINCIPAL (DISEÑO MEJORADO)
-# ----------------------------------------------------
-
 st.title(main_title)
 st.markdown("---")
 
 
-# --- Bloque de Métricas Resumen ---
 st.header("Resumen Ejecutivo")
 metric_col1, metric_col2, metric_col3, metric_col4 = st.columns(4)
 
@@ -94,6 +90,27 @@ st.markdown("---")
 # --- Bloque Principal con Pestañas (Tabs) ---
 tab1, tab2, tab3 = st.tabs([f"1. {sec_one_title}", f"2. {sec_two_title}", f"3. {sec_three_title}"])
 
+# GENERACIÓN DE CONTENIDO GRÁFICO MEDIANTE MODELOS DE LENGUAJE
+model = lms.llm("openai/gpt-oss-20b")
+
+# Define los mensajes
+messages = [
+    {"role": "system", "content": "Eres un científico de datos experto en el análisis de texto para la creación de gráficas y tablas."},
+    {"role": "user", "content": """
+    Describe y analiza el siguiente texto y genera una tabla (Fig.1.) con los datos numéricos que se mencionan:
+    Se recuperaron un total de 6153 documentos, publicados desde 1968 hasta el 2024. Todos los documentos fueron exportados a R haciendo uso del paquete Biblioemtrix.
+    De este total, 66 no fueron recuperados desde Incites por corresponder a documentos publicados antes de 1980.
+    Una descripción general de los documentos se observa en la Fig.1. La colección muestra una producción científica creciente (tasa anual de 8.88%) y altamente colaborativa,
+    con una importante participación internacional (56.17%) y un nivel considerable de citación promedio por artículo (22.14).
+    La alta cantidad de autores y referencias indica una red científica activa y extensa. Se publica en 707 fuentes diferentes.
+    Con 21666 autores, 102 autores por documento y 126817 referencias.
+    """}
+]
+
+# Genera la respuesta
+result = model.respond(messages=messages, temperature=0.2)
+
+
 # =========================================================================
 # PESTAÑA 1: DESCRIPCIÓN GENERAL
 # =========================================================================
@@ -107,6 +124,7 @@ with tab1:
         st.markdown(sec_one_text2)
     with col2:
         display_image(image_one_path, image_one_caption)
+        print(result)
 
     st.markdown("---")
 
@@ -127,13 +145,9 @@ with tab2:
     st.subheader("Evolución de la Productividad a lo largo del tiempo")
 
     # Fila 1: Fig. 3 (Evolución) y explicación del pico
-    col1, col2 = st.columns([1.4, 0.6])
-    with col1:
-        display_image(image_three_path, image_three_caption)
-    with col2:
-        st.markdown(sec_two_text1)
-        st.markdown(f"**Nota sobre el pico de 2002:**")
-        st.info(sec_two_text2)
+    st.markdown(sec_two_text1)
+    display_image(image_three_path, image_three_caption)
+    st.info(sec_two_text2)
 
     st.markdown("---")
     st.subheader("Producción Ajustada por Investigador")
@@ -157,21 +171,22 @@ with tab3:
     col1, col2 = st.columns([0.6, 1.4])
     with col1:
         st.markdown(sec_three_text1)
-        st.markdown(sec_three_text2)
+      #  st.markdown(sec_three_text2)
     with col2:
         display_image(image_six_path, image_six_caption)
 
-    st.markdown("---")
-    st.subheader("Distribución por Cuartil y Ley de Bradford")
 
-    # Fila 2: Fig. 7 (Ley de Bradford) y Tabla 1
     col3, col4 = st.columns([1, 1])
     with col3:
-        st.markdown(sec_three_text3)
-        display_image(image_eight_path, image_eight_caption)
+        st.markdown(sec_three_text2)
     with col4:
-        # Se pone la Tabla 1 al lado del texto para mejor comparación
-        st.markdown("### Tabla de Distribución (Referencia)")
         display_image(image_seven_path, image_seven_caption)
+
+    st.markdown("---")
+    st.subheader("Ley de Bradford")
+
+    st.markdown(sec_three_text3)
+    display_image(image_eight_path, image_eight_caption)
+
 
 st.markdown("---")

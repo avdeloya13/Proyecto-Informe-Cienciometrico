@@ -13,17 +13,20 @@ st.set_page_config(
 # Definimos las variables de texto e imágenes (Adaptadas del Notebook)
 main_title = "Análisis de la Colaboración"
 
-# --- Subsección 1: Colaboración en el ICN ---
-sec_one_title = "Colaboración en el ICN"
-sec_one_text1 = "La colaboración es una característica importante de la producción científica del ICN. La colaboración se puede medir por el número de autores por documento y la participación internacional. El número de autores por documento ha aumentado en los últimos años, con una media de 102 autores por documento para toda la colección. Este valor está sesgado por la presencia de grandes colaboraciones. Al excluir las grandes colaboraciones, el número de autores por documento es de 4.01. [Image of collaboration diagram]. El ICN es una institución que promueve la colaboración. En la Fig. 13 se muestra el diagrama de colaboración de los autores del ICN, donde se observa un núcleo de autores altamente conectados."
+# --- Subsección 1: Colaboracion en el ICN ---
+sec_one_title = "Colaboración Interdepartamental"
+sec_one_text0 = "Para el estudio de la red de colaboración entre los investigadores del ICN, se extrajo información de todos los artículos arbitrados publicados entre 2014 y 2024 (excluyendo grandes colaboraciones) incluidos en el Sistema Integral de Gestión de Información del ICN. Mediante un script programado en PHP se obtuvo la información en formato json de VOSViewer que posteriormente fue exportado a formato GML para ser procesado con el programa GEPHI. Cada nodo representa un investigador, y su tamaño es proporcional al número de artículos publicados durante el período de estudio. Las conexiones entre investigadores indican coautorías, el grosor de las líneas es proporcional al número de colaboraciones entre ellos. Los departamentos en la Fig. 13 son representados por diferentes colores, mientras que en la Fig. 14 se representan con diferentes figuras (círculos, triángulos, cuadrados, etc.)."
+sec_one_text1_1="La agrupación obtenida en la Fig. 13 se obtuvo usando el algoritmo de disposición Contraction y en la Fig. 14 se empleó el algoritmo Force Atlas con los parámetros por defecto. Para la detección de los clústeres, se usó el algoritmo Modularity, también con los parámetros por defecto, incluido en el panel Statistics."
+sec_one_text1= "En la Fig. 14 se muestra la agrupación de los investigadores en 17 clústeres, algunos de los cuales combinan investigadores de varios departamentos (nodos con diferentes formas). Por ejemplo, el cluster azul celeste está formado por investigadores de los departamentos de Física de Altas Energías, Estructura de la Materia, Física de Plasmas y del departamento de Gravitación. En este cluster, se encuentran los investigadores cuya actividad está asociada fuertemente con el C3."
 image_one_path = "assets/images/sec_3_img_1.png"
-image_one_caption = "Fig. 13. Colaboración entre autores del ICN"
-
-# --- Subsección 2: Coautoría Internacional ---
-sec_two_title = "Coautoría Internacional"
-sec_two_text1 = "La coautoría internacional es del 56.17% para toda la producción, lo que es un indicador de la proyección internacional del ICN. En la Fig. 14 se muestra la coautoría internacional por año. Se observa una tendencia general al alza, con un valor promedio de 56.17% en todo el periodo. El valor máximo se alcanza en el año 2024 (78.38%), lo que indica un aumento en la colaboración internacional en los últimos años. Este comportamiento es positivo para la institución, ya que la colaboración internacional promueve el impacto de la producción científica."
+image_one_caption = "Figura 13. Red de colaboración entre investigadores del ICN 2014-2024. Fuente: SIGI"
 image_two_path = "assets/images/sec_3_img_2.png"
-image_two_caption = "Fig. 14. Coautoría internacional por año (porcentaje de artículos con al menos un autor extranjero)"
+image_two_caption = "Figura 14. Red de colaboración entre investigadores del ICN 2014-2024. Fuente: SIGI"
+
+# --- Subsección 2: Colaboracion Nacional ---
+sec_two_title = "Colaboración Nacional"
+sec_two_text1 = "Desde el punto de vista nacional, las principales colaboraciones son con la propia UNAM."
+image_three_path = "assets/images/sec_3_img_3.png"
 
 # --- Subsección 3: Distribución de la Colaboración Internacional ---
 sec_three_title = "Distribución de la Colaboración Internacional"
@@ -82,27 +85,29 @@ st.markdown("---")
 tab1, tab2, tab3 = st.tabs([f"1. {sec_one_title}", f"2. {sec_two_title}", f"3. {sec_three_title}"])
 
 # =========================================================================
-# PESTAÑA 1: COLABORACIÓN EN EL ICN
+# PESTAÑA 1
 # =========================================================================
 with tab1:
     st.subheader(sec_one_title)
+    st.markdown(sec_one_text0)
 
-    # Fila 1: Texto y Fig. 13 (Diagrama de Colaboración)
     col1, col2 = st.columns([0.6, 1.4])
     with col1:
-        st.markdown(sec_one_text1)
-        st.info("El alto promedio de 102 autores por documento en la colección global se debe a las 'grandes colaboraciones'. El valor ajustado de 4.01 es más representativo de la colaboración interna.")
+        st.markdown(sec_one_text1_1)
+        st.info("En la Fig. 13 se observa que las principales colaboraciones ocurren entre investigadores que pertenecen a un mismo departamento. Además, dentro de un mismo departamento, se observan subgrupos con fuerte colaboración interna pero poca colaboración con otros subgrupos.")  
     with col2:
         display_image(image_one_path, image_one_caption)
 
+    st.markdown(sec_two_text1)
+    display_image(image_two_path, image_two_caption)
+
 
 # =========================================================================
-# PESTAÑA 2: COAUTORÍA INTERNACIONAL
+# PESTAÑA 2
 # =========================================================================
 with tab2:
     st.subheader(sec_two_title)
 
-    # Fila 1: Fig. 14 (Coautoría Internacional por año)
     col1, col2 = st.columns([1.5, 0.5])
     with col1:
         display_image(image_two_path, image_two_caption)
