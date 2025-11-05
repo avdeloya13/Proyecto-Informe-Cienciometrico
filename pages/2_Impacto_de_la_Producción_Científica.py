@@ -3,53 +3,73 @@
 import streamlit as st
 import os
 
-# --- Configuración de la Página (Título, Ícono, Layout) ---
 st.set_page_config(
     page_title="Reporte Cienciométrico - Sección 2",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# Definimos las variables de texto e imágenes (Adaptadas del Notebook)
 main_title = "Impacto de la Producción Científica"
 
-# --- Subsección 1: Citas y Factor H ---
-sec_one_title = "Análisis de las Citas y el Factor H"
-sec_one_text1 = "El índice H (o factor H) fue propuesto por Jorge Hirsch en 2005 para cuantificar la calidad de las investigaciones de un científico. El índice h se define como el número de artículos h que han recibido por lo menos h citas. El índice H del ICN se calcula considerando los documentos del ICN indexados en el Web of Science (WoS) en el periodo 1968-2024. El valor de H para la producción científica del ICN es de 97. Este valor indica que 97 documentos han sido citados al menos 97 veces.  Al igual que se hizo con el análisis de producción, este valor se ajusta considerando solo artículos y reviews, excluyendo las grandes colaboraciones. El índice H ajustado es de 86. Estos valores son altos para una institución dedicada a la investigación básica en el área de la física."
-
-# --- Subsección 2: Citas por Documento ---
-sec_two_title = "Citas por Documento"
-sec_two_text1 = "El promedio de citas por documento (CPD) es un indicador de impacto. En la Fig. 8 se muestra la CPD por año, para toda la producción científica del ICN. Se observa que el valor de CPD por año varía entre 0 y 45. El mayor impacto en el periodo evaluado (1968-2024) se obtuvo en el año 1989, con un valor de 45.92. Este alto impacto se debe principalmente al artículo 'The geometry of the general-relativistic 2-body problem' de S. D'Eath y R. E. K. S. E. K. S. J. (498 citas)."
+# --- Subsección 1
+sec_one_title = "Análisis Comparativo"
+sec_one_text = "La siguiente tabla presenta un análisis comparativo de diversos indicadores bibliométricos de impacto del Instituto de Ciencias Nucleares (ICN) de la UNAM para los artículos con y sin grandes colaboraciones y considerando todo el periodo y los últimos 4 años."
 image_one_path = "assets/images/sec_2_img_1.png"
-image_one_caption = "Fig. 8. Promedio de citas por documento por año. ICN en el Web of Science, 1968-2024"
+image_one_caption = "Tabla 2. Indicadores de impacto"
 
-sec_two_text2 = "En la Fig. 9 se observa la CPD por año excluyendo las grandes colaboraciones. Se puede apreciar que la variación entre años es menor, al igual que los valores extremos, oscilando entre 0 y 38. Los años con mayor impacto siguen siendo 1989 (38.82 citas por documento), 1990 (38.16 citas por documento), y 1987 (37.14 citas por documento)."
+sec_one_text2 = "A continuación, se describen los indicadores y se resumen las tendencias observadas en la tabla:"
+sec_one_text3 = "Times Cited (Veces Citado): Las publicaciones con grandes colaboraciones acumulan un número significativamente mayor de citas en comparación con aquellas sin grandes colaboraciones. En el periodo reciente (2020-2024), esta tendencia se mantiene, aunque con cifras menores debido al menor tiempo para acumular citas. Aunque el número total de citas para los artículos sin grandes colaboraciones es menor, sigue siendo considerable."
+sec_one_text4 = "% Docs Cited (Porcentaje de Documentos Citados): Un alto porcentaje de los documentos con grandes colaboraciones son citados (84.09 porciento en todo el periodo y 77.41 prociento en 2020-2024). Las publicaciones sin grandes colaboraciones muestran un porcentaje de citación aún mayor en todo el periodo (90.32%). Como es de esperar, este porcentaje disminuye ligeramente en el periodo reciente (78.41%), superando ligeramente a las GC en este último lapso."
+sec_one_text5 = "Category Normalized Citation Impact (Impacto de Citación Normalizado por Categoría): Este indicador compara el promedio de citas de las publicaciones con el promedio mundial en su respectiva categoría temática. Un valor de 1 indica que el impacto es igual al promedio mundial. Las publicaciones con grandes colaboraciones muestran un impacto ligeramente superior al promedio mundial (1.01 en todo el periodo y 0.98 en 2020-2024). Las publicaciones sin grandes colaboraciones se sitúan por debajo del promedio mundial en todo el periodo (0.78), pero muestran una mejora en el periodo reciente (0.84)."
+sec_one_text6 = "% Documents in Top 1% (Porcentaje de Documentos en el 1% Más Citado): Un mayor porcentaje de documentos con grandes colaboraciones se encuentra en el selecto grupo del 1% más citado a nivel mundial (1.54 porciento en todo el periodo y 1.38 porciento en 2020-2024). El porcentaje es menor para los artículos sin grandes colaboraciones (0.8 porciento en todo el periodo), pero muestra un incremento notable en el periodo reciente (1.14%)."
+sec_one_text7 = "% Documents in Top 10% (Porcentaje de Documentos en el 10% Más Citado): Consistentemente, un mayor porcentaje de documentos con grandes colaboraciones se ubica en el 10% más citado (11.38 porciento en todo el periodo y 11.41 porciento en 2020-2024). En el otro subconjunto los porcentajes son menores (7.54 porciento en todo el periodo y 6.82 porciento en 2020-2024)."
+sec_one_text8 = '% Highly Cited Papers (Porcentaje de Artículos Altamente Citados): El porcentaje de GC altamente citados es mayor en el periodo reciente (0.69%) comparado con todo el periodo (0.34%). En el caso de los artículos sin GC se observa una tendencia similar, con un incremento significativo en el periodo reciente (0.72%) respecto a todo el periodo (0.22%). Notablemente, en el periodo 2020-2024, los artículos sinGC superan a las GC en este indicador.'
+sec_one_text9 = "Average Percentile (Percentil Promedio): Indica la posición promedio de las publicaciones en relación con todas las demás en su campo. Un percentil más alto sugiere un mejor rendimiento. Los percentiles promedio de artículo con GC son 47.92 para todo el periodo y 43.76 para 2020-2024. Para los artículos sin GC, los percentiles son 45.05 y 40.28 respectivamente. En general, las publicaciones con grandes colaboraciones se sitúan en percentiles ligeramente más altos."
+sec_one_text10 = '% Hot Papers (Porcentaje de Artículos "Calientes" o de Tendencia): Se refiere a artículos recientes que han sido citados muy rápidamente después de su publicación. Con respecto a las GC, el porcentaje aumenta del 0.02 porciento en todo el periodo al 0.08 porciento en 2020-2024. Los artículos sin GC también muestran un incremento, pasando del 0.02 porciento al 0.1 porciento en el periodo reciente, superando ligeramente a las GC en este último periodo.'
+sec_one_text11 = "Journal Normalized Citation Impact (Impacto de Citación Normalizado por Revista): Este índice compara el impacto de citación de los artículos con el promedio de la revista donde fueron publicados. Con GC, los valores son 0.99 para todo el periodo y 0.93 para 2020-2024. En el caso de los artículos sin GC, los valores son ligeramente inferiores, 0.92 y 0.88 respectivamente. En general, el impacto está cerca del promedio de las revistas."
+sec_one_text12 = "H-Index (Índice H): Este indicador mide tanto la productividad como el impacto de las citas de un conjunto de publicaciones. Con GC, el índice H es considerablemente más alto (141 en todo el periodo y 46 en 2020-2024) que sin GC con valores de 108 y 36 respectivamente."
+sec_one_text13 = "% Documents in Q1 Journals (Porcentaje de Documentos en Revistas del Cuartil 1): Indica el porcentaje de publicaciones en revistas que se encuentran en el 25 porciento superior de su categoría según el impacto. Con GC, aproximadamente la mitad de las publicaciones se encuentran en revistas Q1 (50.7 porciento en todo el periodo y 50.72 porciento en 2020-2024). Sin GC, el porcentaje es ligeramente menor (46.99 porciento en todo el periodo y 44.46 porciento en 2020-2024)."
+sec_one_text14 = "% Documents in Q2 Journals (Porcentaje de Documentos en Revistas del Cuartil 2): Porcentaje de publicaciones en revistas del segundo cuartil (entre el 25% y el 50 porciento superior). Con GC, los porcentajes son 27.78% (todo el periodo) y 32.66% (2020-2024), mientras que sin GC los porcentajes son 29.03% y 35.41 porciento respectivamente. En el periodo reciente, las publicaciones sin grandes colaboraciones tienen una mayor proporción en Q2."
+sec_one_text15 = "% Documents in Q3 Journals (Porcentaje de Documentos en Revistas del Cuartil 3): Con GC, 13.96% (todo el periodo) y 11.43% (2020-2024). Sin GC, 15.27% y 14.52 porciento respectivamente."
+sec_one_text16 = "% Documents in Q4 Journals (Porcentaje de Documentos en Revistas del Cuartil 4): Con GC, 7.56% (todo el periodo) y 5.19% (2020-2024). Sin GC, 8.7% y 5.61% respectivamente. En ambos casos, se observa una disminución en la proporción de artículos en Q4 en el periodo reciente."
+sec_one_text17 = "En términos globales, la mayor parte de la producción científica del ICN se concentra en revistas de alto impacto (Q1 y Q2), tanto si se incluyen las grandes colaboraciones (GC) como si se excluyen. Incluso sin considerar colaboraciones masivas, casi 8 de cada 10 artículos del ICN se publican en revistas del primer y segundo cuartil, lo que refleja un posicionamiento sostenido en revistas de calidad y alto impacto."
+image_one_path = "assets/images/sec_2_img_1.png"
+image_one_caption = "Tabla 1. Indicadores de impacto"
+
+# --- Subsección 2
+sec_two_title = "Conclusiones Generales"
+sec_two_text1 = "Las publicaciones con GC tienden a tener un mayor número bruto de citas, un mayor porcentaje de documentos en el top 1% y 10% más citado, y un índice H más alto. También publican ligeramente más en revistas Q1. Su impacto normalizado por categoría y por revista tiende a ser cercano o ligeramente superior al promedio."
+sec_two_text2 = "Las publicaciones sin grandes colaboraciones (Sin GC), aunque con un volumen de citas menor, muestran un porcentaje de documentos citados muy alto, especialmente en todo el periodo. En el periodo reciente (2020-2024), muestran un notable incremento en el porcentaje de artículos altamente citados y 'hot papers', superando en estos aspectos a las publicaciones con grandes colaboraciones."
+
+# --- Subsección 3
+sec_three_title = "Evolución del Impacto"
+sec_three_text1 = "Se muestran dos métricas relacionadas con el impacto de las publicaciones científicas:"
+sec_three_text2 = "- MeanTCperArt (línea azul, eje izquierdo): Promedio de citas totales por artículo."
+sec_three_text2_2= "- MeanTCperYear (línea verde, eje derecho): Promedio de citas por artículo por año."
 image_two_path = "assets/images/sec_2_img_2.png"
-image_two_caption = "Fig. 9. Promedio de citas por documento por año, excluyendo grandes colaboraciones. ICN en el Web of Science, 1968-2024"
+image_two_caption = "Citas recibidas por la producción científica del ICN en todo el periodo"
 
-# --- Subsección 3: Distribución de Citas y Citas por Investigador ---
-sec_three_title = "Distribución de Citas y Rendimiento de Impacto"
-sec_three_text1 = "La distribución de las citas es muy asimétrica. Un pequeño número de artículos acumula una gran parte de las citas. La Fig. 10 muestra esta distribución, donde se observa que el 80% de las citas (75,650) están concentradas en el 20% de los documentos (1,230 artículos)."
+sec_three_text3 = "Se muestra el comportamiento del Category Normalized Citation Impact (CNCI) de la producción científica del ICN entre 1980 y 2024; este indicador compara el número de citas que recibe una publicación con el promedio de citas de publicaciones similares (por año, tipo de documento y categoría temática). Un valor de 1 indica impacto promedio, mayor que 1 implica impacto por encima del promedio, y menor que 1 indica un impacto por debajo del promedio."
+sec_three_text4 = "En esta figura se observa un aumento sostenido del impacto normalizado a partir de 2005, con varios picos entre 2011 y 2016, incluso superando un CNCI de 1.5, lo que indica que, en esos años, las publicaciones del ICN fueron categóricamente más citadas que el promedio internacional de su campo. A partir de 2019, el CNCI disminuye, aunque se mantiene mayormente en torno a 1."
 image_three_path = "assets/images/sec_2_img_3.png"
-image_three_caption = "Fig. 10. Distribución acumulada de citas para la producción científica del ICN"
+image_three_caption = "Category Normalized Citation Impact (CNCI) de la producción científica del ICN entre 1980 y 2024"
 
-sec_three_text2 = "Considerando el número de académicos a tiempo completo, se puede calcular la CPD por investigador. En la Fig. 11 y Fig. 12 se muestra la CPD por investigador con y sin grandes colaboraciones respectivamente. Se observa una tendencia general al alza, lo que indica que el impacto del ICN se ha incrementado en los últimos años."
+sec_three_text5 = "Se presenta la evolución del porcentaje de documentos del ICN ubicados en el top 1% más citado a nivel mundial dentro de su categoría temática y año de publicación, durante el periodo comprendido entre 1980 y 2024. Aunque durante las décadas de 1980 y 1990 no se registran documentos en este rango de excelencia, a partir del año 2000 comienzan a observarse publicaciones altamente citadas. Este comportamiento se intensifica entre 2008 y 2014, con picos notables en 2010 y 2012, años en los que más del 5% de los artículos publicados por el instituto se situaron entre el 1% más citado del mundo. Si bien el volumen de publicaciones de altísimo impacto ha disminuido ligeramente en la última década, el ICN ha mantenido una presencia destacada en la frontera de la investigación científica global."
 image_four_path = "assets/images/sec_2_img_4.png"
-image_four_caption = "Fig. 11. Promedio de citas por documento por investigador, 1996-2024"
+image_four_caption = "Porcentaje de documentos en top 1 de la producción científica del ICN entre 1980 y 2024"
+
+sec_three_text6 = "A diferencia de la distribución de artículos en el top 1%, sí aparecen artículos en el top 10% desde las décadas de los 80 aunque el comportamiento es irregular, con fluctuaciones marcadas y picos aislados (por ejemplo, en 1984 y 1991), lo que puede deberse al volumen relativamente bajo de publicaciones. A partir de mediados de los años 2000 se observa una tendencia sostenida al alza, alcanzando sus valores más altos entre 2010 y 2015, donde en algunos años más del 20% de los documentos del ICN se situaron en el top 10% más citado del mundo. Aunque en los últimos años (posteriores a 2019) se percibe un descenso, este puede estar relacionado con el menor tiempo de exposición de los documentos recientes a ser citados. En conjunto, esta figura confirma que una proporción significativa y creciente de la producción del ICN ha logrado destacarse por su impacto internacional."
 image_five_path = "assets/images/sec_2_img_5.png"
-image_five_caption = "Fig. 12. Promedio de citas por documento por investigador, excluyendo grandes colaboraciones, 1996-2024"
+image_five_caption = "Porcentaje de documentos en top 100 de la producción científica del ICN entre 1980 y 2024"
 
+image_six_path = "assets/images/sec_2_img_6.png"
+image_six_caption = "Average Percentile de la producción científica del ICN entre 1980 y 2024"
 
-# --- Secciones del Informe (para el menú final - Se mantienen las mismas referencias) ---
-sec_five_title1 = "Evolución del Volumen de la Producción Científica"
-sec_five_title3 = "Análisis de la Colaboración"
-sec_five_title4 = "Caracterización Temática de la Producción Científica"
-sec_five_title5 = "Contribución a los Objetivos de Desarrollo Sostenible (ODS)"
+image_seven_path = "assets/images/sec_2_img_7.png"
+image_seven_caption = "Evolución del perfil multidimensional de desempeño"
 
-
-# Función auxiliar para mostrar imágenes con caption y manejo de error.
+#Para mostrar imagenes con caption centrada y manejo de error.
 def display_image(path, caption):
-    """Muestra la imagen con un caption centrado."""
     if not os.path.exists(path):
         st.warning(f"⚠️ Imagen no encontrada en: {path}. Asegúrate de que el directorio 'assets/images/' exista y contenga las imágenes.")
         st.info(f"Placeholder para: {caption}")
@@ -58,14 +78,44 @@ def display_image(path, caption):
         st.image(path, caption=caption, width="stretch")
 
 
-# ----------------------------------------------------
-# APLICACIÓN PRINCIPAL
-# ----------------------------------------------------
+def format_description_list(texts):
+    st.markdown(sec_one_text2)
+
+    cols_descriptions = st.columns(2)
+    
+    list_items = [
+        sec_one_text3, sec_one_text4, sec_one_text5.replace('<br />', ''), sec_one_text6, sec_one_text7,
+        sec_one_text8, sec_one_text9, sec_one_text10, sec_one_text11, sec_one_text12, sec_one_text13, 
+        sec_one_text14, sec_one_text15, sec_one_text16
+    ]
+    
+    #Punto de división para 7 elementos por columna
+    split_point = 7 
+    
+    #Columna 1: elementos 0 a 6 (7 elementos)
+    with cols_descriptions[0]:
+        st.markdown("---")
+        for i in range(split_point):
+
+            if i < len(list_items):
+                title, value = list_items[i].split(':', 1)
+                st.markdown(f"**{title.strip()}:** {value.strip()}")
+                st.markdown("---")
+            
+    #Columna 2: elementos 7 a 13 (7 elementos)
+    with cols_descriptions[1]:
+        st.markdown("---")
+        #Empieza en 7 y termina en el final de la lista (14)
+        for i in range(split_point, len(list_items)): 
+
+            if i < len(list_items):
+                title, value = list_items[i].split(':', 1)
+                st.markdown(f"**{title.strip()}:** {value.strip()}")
+                st.markdown("---")
 
 st.title(main_title)
 st.markdown("---")
 
-# --- Bloque de Métricas Resumen ---
 st.header("Indicadores de Impacto Clave")
 metric_col1, metric_col2, metric_col3, metric_col4 = st.columns(4)
 
@@ -80,71 +130,98 @@ with metric_col4:
 
 st.markdown("---")
 
-
-# --- Bloque Principal con Pestañas (Tabs) ---
+#PESTAÑAS
 tab1, tab2, tab3 = st.tabs([f"1. {sec_one_title}", f"2. {sec_two_title}", f"3. {sec_three_title}"])
 
 # =========================================================================
-# PESTAÑA 1: CITAS Y FACTOR H
+# PESTAÑA 1
 # =========================================================================
 with tab1:
-    st.subheader("Cuantificación de la Calidad y Producción")
-    st.markdown(sec_one_text1)
+    st.subheader("Métricas Relacionadas con el Impacto de las Publicaciones Científicas")
+    st.markdown(sec_one_text)          
+    display_image(image_one_path, image_one_caption)
 
-    st.markdown(
-        """
-        El valor de **H=97 (Global)** y **H=86 (Ajustado)** sugiere una alta productividad de artículos bien citados a lo largo del periodo, lo que es un indicador de la solidez en investigación básica.
-        """
-    )
+    #Descripción de indicadores
+    format_description_list([sec_one_text3, sec_one_text4, sec_one_text5, sec_one_text6, sec_one_text7,
+                         sec_one_text8, sec_one_text9, sec_one_text10, sec_one_text11, sec_one_text12,
+                         sec_one_text13, sec_one_text14, sec_one_text15, sec_one_text16])
 
-
-# =========================================================================
-# PESTAÑA 2: CITAS POR DOCUMENTO (CPD)
-# =========================================================================
-with tab2:
-    st.subheader("CPD por Año: Análisis de Impacto Temporal")
-
-    # Fila 1: Fig. 8 (Global)
-    col1, col2 = st.columns([1.5, 0.5])
-    with col1:
-        display_image(image_one_path, image_one_caption)
-    with col2:
-        st.markdown(sec_two_text1)
-        st.info("El pico de 1989 (45.92 CPD) se debe a un artículo altamente citado sobre la relatividad general.")
-
+    #Conclusión
+    st.info(sec_one_text17)
     st.markdown("---")
 
-    # Fila 2: Fig. 9 (Ajustado)
-    col3, col4 = st.columns([0.5, 1.5])
-    with col3:
-        st.markdown(sec_two_text2)
-        st.info("Al excluir las grandes colaboraciones, la variación anual del CPD se suaviza, mostrando valores máximos más consistentes alrededor de los años 80 y 90.")
-    with col4:
-        display_image(image_two_path, image_two_caption)
+# =========================================================================
+# PESTAÑA 2
+# =========================================================================
+with tab2:
+    st.subheader("Conclusiones Generales de la Descripción")
 
+    st.markdown(f"**Conclusiones sobre publicaciones con Grandes Colaboraciones (GC):** {sec_two_text1}")
+    st.markdown(f"**Conclusiones sobre publicaciones Sin Grandes Colaboraciones (Sin GC):** {sec_two_text2}")
+    st.markdown("---")
 
 # =========================================================================
-# PESTAÑA 3: DISTRIBUCIÓN DE CITAS Y RENDIMIENTO DE IMPACTO
+# PESTAÑA 3
 # =========================================================================
 with tab3:
-    st.subheader("Concentración de Citas (Principio de Pareto)")
 
-    # Fila 1: Fig. 10 (Distribución Asimétrica)
-    col1, col2 = st.columns([0.8, 1.2])
-    with col1:
-        st.markdown(sec_three_text1)
-        st.warning("La concentración del 80% de las citas en el 20% de los documentos es un fenómeno común en la literatura científica (Ley de Lotka o principio de Pareto).")
-    with col2:
+    st.markdown("### CNCI: Impacto Normalizado por Categoría")
+    cols_fig9 = st.columns([2, 3]) #2/5 partes para texto, 3/5 para imagen
+
+    with cols_fig9[0]:
+        st.markdown(sec_three_text3)
+        st.markdown(sec_three_text4)
+        st.success(" El impacto normalizado experimentó un crecimiento sostenido post-2005, superando consistentemente el promedio mundial (CNCI > 1) entre 2011 y 2016.")
+
+    with cols_fig9[1]:
         display_image(image_three_path, image_three_caption)
 
     st.markdown("---")
-    st.subheader("CPD Ajustado por Investigador")
 
-    st.markdown(sec_three_text2)
+    st.markdown("### Top 1%: Artículos de Máxima Excelencia")
+    cols_fig10 = st.columns([3, 2])
 
-    # Fila 2: Fig. 11 y Fig. 12 (CPD por Investigador)
-    col3, col4 = st.columns(2)
-    with col3:
+    with cols_fig10[0]:
         display_image(image_four_path, image_four_caption)
-    with col4:
+
+    with cols_fig10[1]:
+        st.markdown(sec_three_text5)
+        st.info(" Aunque la presencia fue nula en los 80/90, el instituto registró picos de más del 5% de artículos en el Top 1% mundial entre 2010 y 2012.")
+
+    st.markdown("---")
+
+    st.markdown("### Perspectiva Global: Tendencia de Citas y Top 10%")
+    st.markdown("Esta sección agrupa la evolución de la tendencia de citas brutas y el porcentaje en el Top 10%, permitiendo una visión comparativa del impacto amplio.")
+
+    col_f8, col_f11 = st.columns(2) #1:1 Columnas para las figuras
+
+    with col_f8:
+        st.markdown("#### ⭐ **Citas Recibidas**")
+        display_image(image_two_path, image_two_caption)
+        with st.expander("Ver Definiciones de Métricas"):
+            st.markdown(sec_three_text1)
+            st.markdown(sec_three_text2.replace('. ', '\n- ').strip()) #Formato de lista
+            st.markdown(sec_three_text2_2)
+
+    with col_f11:
+        st.markdown("#### 🏆 **Documentos en Top 10%**")
         display_image(image_five_path, image_five_caption)
+        st.markdown(sec_three_text6)
+
+    st.markdown("---")
+
+
+    # ---AGRUPACIÓN FINAL 1:1 ---
+    st.markdown("### Resumen y Perfil de Desempeño Final")
+    st.markdown("Las últimas dos figuras ofrecen una visión de resumen: el percentil promedio (rendimiento relativo) y un perfil multidimensional (integración de métricas).")
+
+    col_f12, col_f13 = st.columns(2) #1:1 Columnas para las figuras de resumen
+
+    with col_f12:
+        st.markdown("#### 📈 **Evolución del Percentil Promedio**")
+        display_image(image_six_path, image_six_caption)
+
+    with col_f13:
+        st.markdown("#### 📊 **Perfil Multidimensional de Desempeño**")
+        display_image(image_seven_path, image_seven_caption)
+

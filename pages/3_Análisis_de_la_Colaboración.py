@@ -3,14 +3,12 @@
 import streamlit as st
 import os
 
-# --- Configuración de la Página (Título, Ícono, Layout) ---
 st.set_page_config(
     page_title="Reporte Cienciométrico - Sección 3",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# Definimos las variables de texto e imágenes (Adaptadas del Notebook)
 main_title = "Análisis de la Colaboración"
 
 # --- Subsección 1: Colaboracion en el ICN ---
@@ -46,8 +44,7 @@ sec_nav_title2 = "Impacto de la Producción Científica"
 sec_nav_title4 = "Caracterización Temática de la Producción Científica"
 sec_nav_title5 = "Contribución a los Objetivos de Desarrollo Sostenible (ODS)"
 
-
-# Función auxiliar para mostrar imágenes con caption y manejo de error.
+#Para mostrar imágenes con caption y manejo de error.
 def display_image(path, caption):
     """Muestra la imagen con un caption centrado."""
     if not os.path.exists(path):
@@ -57,15 +54,9 @@ def display_image(path, caption):
     else:
         st.image(path, caption=caption, width="stretch")
 
-
-# ----------------------------------------------------
-# APLICACIÓN PRINCIPAL
-# ----------------------------------------------------
-
 st.title(main_title)
 st.markdown("---")
 
-# --- Bloque de Métricas Resumen ---
 st.header("Indicadores Clave de Colaboración")
 metric_col1, metric_col2, metric_col3, metric_col4 = st.columns(4)
 
@@ -81,7 +72,7 @@ with metric_col4:
 st.markdown("---")
 
 
-# --- Bloque Principal con Pestañas (Tabs) ---
+#PESTAÑAS
 tab1, tab2, tab3 = st.tabs([f"1. {sec_one_title}", f"2. {sec_two_title}", f"3. {sec_three_title}"])
 
 # =========================================================================
@@ -117,7 +108,7 @@ with tab2:
 
 
 # =========================================================================
-# PESTAÑA 3: DISTRIBUCIÓN DE LA COLABORACIÓN INTERNACIONAL
+# PESTAÑA 3
 # =========================================================================
 with tab3:
     st.subheader(sec_three_title)
