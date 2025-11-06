@@ -76,7 +76,6 @@ with metric_col3:
 with metric_col4:
     st.metric("Colaboración Internacional", "56%", delta="Sólida")
 
-st.markdown("---")
 
 #PESTAÑAS
 tab1, tab2, tab3 = st.tabs([f"1. {sec_one_title}", f"2. {sec_two_title}", f"3. {sec_three_title}"])

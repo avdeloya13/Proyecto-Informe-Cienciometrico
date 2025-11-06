@@ -120,15 +120,33 @@ st.header("Indicadores de Impacto Clave")
 metric_col1, metric_col2, metric_col3, metric_col4 = st.columns(4)
 
 with metric_col1:
-    st.metric("Índice H (Global)", "97")
+    st.metric(
+        label="Media Autores / Documento", 
+        value="4.01", 
+        help="Excluyendo grandes colaboraciones, indica el tamaño promedio de los equipos de investigación."
+    )
 with metric_col2:
-    st.metric("Índice H (Ajustado)", "86", help="Excluyendo grandes colaboraciones")
+    st.metric(
+        label="Coautoría Internacional", 
+        value="56.17%", 
+        delta="Alta proyección", 
+        help="Porcentaje de documentos con al menos un autor de una institución extranjera."
+    )
 with metric_col3:
-    st.metric("Promedio Citas / Documento", "22.14", delta="Valor anterior: 18.03") # Se usa el valor de la Secc 1 como referencia
+    st.metric(
+        label="Países Colaboradores", 
+        value="90", 
+        help="Número total de países con al menos una coautoría con el ICN."
+    )
 with metric_col4:
-    st.metric("Total de Citas Acumuladas", "94,563")
+    st.metric(
+        label="Principal Colaborador", 
+        value="USA", 
+        delta="19.33% de la Colaboración Total",
+        delta_color="normal",
+        help="País con la mayor frecuencia de coautorías."
+    )
 
-st.markdown("---")
 
 #PESTAÑAS
 tab1, tab2, tab3 = st.tabs([f"1. {sec_one_title}", f"2. {sec_two_title}", f"3. {sec_three_title}"])
