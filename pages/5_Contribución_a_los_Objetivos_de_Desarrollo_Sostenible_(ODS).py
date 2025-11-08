@@ -24,8 +24,13 @@ image_three_path = "assets/images/sec_5_img_3.png"
 image_three_caption = " "
 
 # --- Subsección 2
-sec_two_title = " Objetivos de Desarrollo Sostenible (ODS)"
-sec_two_text1 = ""
+sec_two_title = '''Objetivos de Desarrollo Sostenible (ODS)'''
+sec_two_text1 = '''En la Tabla se muestra la distribución de documentos según su contribución a los Objetivos de Desarrollo Sostenible (ODS) de la Agenda 2030, tal como son clasificados por WoS (Sustainable Development Goals mapping). El 19.8% de los documentos contribuyen a algún ODS. El ODS más representado en la producción científica es Salud y bienestar (ODS 3), lo que sugiere un fuerte enfoque de investigación en temas médicos, biomédicos o de salud pública. Le siguen Acción por el clima (ODS 13) y Energía asequible y no contaminante (ODS 7), que también muestran una importante contribución.'''
+image_four_path = "assets/images/sec_5_img_4.png"
+image_four_caption = "Documentos según su contribución a los Objetivos de Desarrollo Sostenible (ODS)"
+image_five_path = "assets/images/sec_5_img_5.png"
+image_five_caption = "Evolución de la proporción de artículos en los diferentes ODS"
+
 
 #Para mostrar imágenes con caption y manejo de error.
 def display_image(path, caption):
@@ -54,7 +59,7 @@ with metric_col4:
 
 
 #PESTAÑAS
-tab1, tab2 = st.tabs([f"1. {sec_one_title}", f"ODS"])
+tab1, tab2 = st.tabs([f"1. {sec_one_title}", f"Distribución de Documentos"])
 
 # =========================================================================
 # PESTAÑA 1
@@ -81,10 +86,16 @@ with tab1:
 with tab2:
     st.subheader(sec_two_title)
 
-    # Fila 1: Fig. 20 (Evolución Temporal)
-    col1, col2 = st.columns([1.5, 0.5])
+    col1, col2 = st.columns([0.6, 1.4])
     with col1:
-        display_image(image_two_path, image_two_caption)
-    with col2:
         st.markdown(sec_two_text1)
-        st.success("La tendencia positiva indica una alineación creciente entre la investigación del ICN y los desafíos de sostenibilidad global.")
+    with col2:
+        display_image(image_four_path, image_four_caption)
+
+
+    st.markdown("---")
+
+    st.markdown("#### Evolución de la Contribución a ODS")
+    col_vacia_2, col_img_5, col_vacia_3 = st.columns([1, 4, 1])
+    with col_img_5:
+        display_image(image_five_path, image_five_caption)
