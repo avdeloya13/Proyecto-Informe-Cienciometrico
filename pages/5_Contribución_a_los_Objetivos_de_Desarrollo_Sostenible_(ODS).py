@@ -92,7 +92,6 @@ with tab2:
     with col2:
         display_image(image_four_path, image_four_caption)
 
-
     st.markdown("---")
 
     st.markdown("#### Evolución de la Contribución a ODS")
