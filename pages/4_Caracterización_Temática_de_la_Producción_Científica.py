@@ -116,7 +116,7 @@ with tab2:
     with col2_4:
         display_image(image_seven_path, "Gráfico de evolución de categorías 2")
 
-    st.divider()
+    
 
 # =========================================================================
 # PESTAÑA 3

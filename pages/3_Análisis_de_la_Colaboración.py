@@ -110,8 +110,14 @@ with tab1:
     with col1_2:
         display_image(image_one_path, caption=image_one_caption)
 
-    st.markdown(sec_one_text4)
-    display_image(image_two_path, caption=image_two_caption)
+    col1_3, col1_4 = st.columns([3, 2])
+
+    with col1_3:
+        display_image(image_two_path, caption=image_two_caption)
+
+    with col1_4:
+        st.markdown(sec_one_text4)
+    
 
 # =========================================================================
 # PESTAÑA 2
@@ -163,6 +169,11 @@ with tab3:
 # =========================================================================
 with tab4:
     st.subheader(sec_four_title)
-    st.markdown(sec_four_text1)
 
-    display_image(image_nine_path, "Distribución de Género en la Red de Colaboración")
+    col1_1, col1_2 = st.columns([2, 2])
+
+    with col1_1: 
+        st.markdown(sec_four_text1)
+
+    with col1_2: 
+        display_image(image_nine_path, "Distribución de Género en la Red de Colaboración")
