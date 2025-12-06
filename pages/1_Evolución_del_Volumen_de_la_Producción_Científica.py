@@ -34,7 +34,7 @@ image_three_caption = "Evolución de la producción científica del ICN en el We
 sec_two_text3 = "El número de académicos a tiempo completo asociado al ICN ha aumentado desde su fundación como entidad académica hasta la actualidad. En los últimos años, este número ha mostrado cierta estabilidad. Se muestra la producción ajustada por el número de investigadores asociados a la institución en el periodo de 1996-2024, con y sin grandes colaboraciones respectivamente. Se observa una tendencia al crecimiento. Este crecimiento pudiera asociarse no solo al crecimiento de la actividad institucional, sino también a la propia cobertura de las bases de datos, dado el aumento de la cobertura del WoS durante los últimos años."
 image_four_path = "assets/images/sec_1_img_4.png"
 image_four_caption = "Total de documentos publicados, por investigador, 1996-2024"
-image_five_path = "assets/images/sec_1_img_5.png"
+image_five_path = "assets/images/sec_1_img_5.jpeg"
 image_five_caption = "Total de artículos, sin considerar grandes colaboraciones, publicados por investigador, 1996-2024"
 
 # --- Subsección 3
