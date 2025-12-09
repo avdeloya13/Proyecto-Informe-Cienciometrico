@@ -1,0 +1,51 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+
+\label{chap:code}
+
+\begin{mmaCell}[morepattern={x_, x}]{Input}
+SetDirectory@NotebookDirectory[];
+\end{mmaCell}
+
+	\mmaSec{Importación de datos}
+
+\begin{mmaCell}[morepattern={T_,P_}]{Input}
+experimentalData=Import["experimental.txt","Table"]/.
+   \{\mmaPat{θ_},P_\}->\{\mmaUnd{θ},P/\mmaSup{10}{6}\};
+\end{mmaCell}
+
+	\mmaSec{Definición de constantes y parámetros globales}
+ 
+\begin{mmaCell}[moredefined={nAir, rDB}]{Input}
+\mmaDef{λRb}=\mmaUnit{780.241nm};
+nAir=1.000277;
+rDB=0.85(*comentario en Mathematica*);
+\end{mmaCell}
+
+\begin{mmaCell}[addtoindex=2]{Input}
+diode=\{\mmaUnd{μ}->\mmaUnit{782.2nm}, 
+   \mmaUnd{σ}->\mmaUnit{10nm},
+   L->\mmaUnit{0.282mm},
+   n->3.5,
+   r1->rDB, r2->0.15\};
+cavity=\{L->\mmaUnit{50mm},
+   n->nAir, r1->rDB, r2->0.3\};	
+\end{mmaCell}
+
+Texto documentando el código
+
+\begin{mmaCell}[addtoindex=1,moredefined={f}]{Input}
+\mmaDef{∆νD}=UnitConvert\Big[\mmaFrac{\mmaUnit{c}}{2 n L},"GHz"\Big]/.diode
+\mmaDef{∆νC}=UnitConvert\Big[\mmaFrac{\mmaUnit{c}}{2 n L},"GHz"\Big]/.cavity
+\end{mmaCell}
+
+\begin{mmaCell}{Output}
+\mmaUnit{151.871 GHz}
+\end{mmaCell}
+
+\begin{mmaCell}{Output}
+\mmaUnit{2.99709 GHz}
+\end{mmaCell}
+
+\end{document}

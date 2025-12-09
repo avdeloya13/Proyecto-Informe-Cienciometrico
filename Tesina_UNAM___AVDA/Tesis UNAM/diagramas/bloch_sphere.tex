@@ -1,0 +1,76 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+
+\begin{figure}
+\centering
+
+% Parámetros
+	\def\r{2.5}
+	\def\vtheta{45}
+	\def\vphi{60}
+	\def\polar{75}
+	\def\azimuth{130}
+	
+% Perspectiva de la esfera
+	\tdplotsetmaincoords{\polar}{\azimuth}
+	
+\begin{tikzpicture}[scale=1,tdplot_main_coords]
+
+    \coordinate (O) at (0,0,0);
+
+	\draw[tdplot_screen_coords,black!30] (O) circle (\r);
+	
+% Paralelos y meridianos	
+	\tdplotsetthetaplanecoords{0}
+	
+	\foreach \a in {-75,-60,...,75}
+		{\tdplotCsDrawLatCircle[thin,black!30]{\r}{\a}}
+	\foreach \a in {0,15,...,165}
+		{\tdplotCsDrawLonCircle[thin,black!30]{\r}{\a}}
+	\tdplotCsDrawLonCircle% XY
+	{\r}{90}
+	\tdplotCsDrawLatCircle% Ecuador
+	[tdplotCsFill/.style={opacity=0.05}]{\r}{0}
+	\tdplotdrawarc% Pulso π/2
+	[thick,->,cyan,tdplot_rotated_coords]{(O)}{\r}{0}{90}{anchor=south east, inner sep = 20pt }{pulso π/2}
+		 
+% Ejes	
+	\tdplotsetthetaplanecoords{\vphi}
+	
+	\draw[thick,->] (O) -- (1.25*\r,0,0) node[anchor=north east,inner sep=0pt]{$x$};
+	\draw[thick,->] (O) -- (0,1.25*\r,0) node[anchor=north east, inner sep=1pt]{$z$};
+	\draw[thick,->] (O) -- (0,0,1.25*\r) node[anchor=south]{$y$};
+	
+	\draw[fill] (\r,0,0) circle (1.5pt);
+	\node at (\r,0,0) [anchor= north east, inner sep = 20pt]{ $\frac{1}{\sqrt{2}}\qty(\ket{\downarrow}+\ket{\uparrow})$};
+	
+	\draw[fill] (0,\r,0) circle (1.5pt);
+	\node at (0,\r,0) [anchor= west, inner sep = 20pt]{$\frac{1}{\sqrt{2}}\qty(\ket{\downarrow}+i\ket{\uparrow})$};
+	
+	\draw[fill,cyan] (0,0,\r) circle (1.5pt);
+	\node at (0,0,\r) [cyan,anchor=south east]{$\ket{\downarrow}$};
+	
+	\draw[fill,orange] (0,0,-\r) circle (1.5pt);
+	\node at (0,0,-\r) [orange,anchor=north]{$\ket{\uparrow}$};
+		
+    \tdplotsetcoord{P}{\r}{\vtheta}{\vphi}
+
+	\draw[densely dotted] (O) -- (Pxy);
+	\draw[densely dotted] (P) -- (Pxy);
+	\draw[fill,violet] (P) circle (1.5pt);
+	\draw[thick,->,color=violet] (O) -- (P) node[violet, anchor=west, inner sep=1pt]{$\ket{\psi}$};
+    
+	\tdplotdrawarc[->]{(O)}{.7*\r}{0}{\vphi}{anchor=north, inner sep=8}{$\varphi$}
+	\tdplotdrawarc[->,tdplot_rotated_coords]{(O)}{.7*\r}{0}{\vtheta}{anchor=north east,inner sep=8}{$\theta$}
+% Ecuador	
+   
+    \tdplotdrawarc{(O)}{\r}{\azimuth-180}{\azimuth}{}{}
+	\tdplotdrawarc[dashed]{(O)}{-\r}{\azimuth-180}{\azimuth}{}{}
+\end{tikzpicture}
+
+\caption{Diagrama de la esfera de Bloch. En azul se muestra un pulso π/2 a partir del estado $\ket{\downarrow}$ y en morado un pulso en general donde $\textcolor{violet}{\ket{\psi}}=\cos\frac{θ}{2}\textcolor{cyan}{\ket{\downarrow}}+ e^{iφ}\sin\frac{θ}{2}\textcolor{orange}{\ket{\uparrow}}$.}
+\label{fig:bloch_sphere}	
+\end{figure}
+
+\end{document}

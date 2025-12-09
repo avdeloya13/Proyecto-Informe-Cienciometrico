@@ -1,0 +1,721 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% author: Dai López Jacinto
+% email: dpezto@ciencias.unam.mx
+
+% Comparto la plantilla que utilice para escribir mi tesis de 
+% licenciatura. Basada en la plantilla de Salvador Pedraza Espitia.
+% Agregué varios paquetes extra junto con comentarios de su función;
+% así como códigos de ejemplo para todos aquellos que son nuevos
+% en LaTeX.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[letterpaper,spanish,12pt]{book}
+
+\usepackage{lipsum} % Lorem Ipsum dummy text
+\usepackage{float}
+\usepackage{minted}
+\usepackage{xcolor}
+
+\usemintedstyle{friendly}
+\usepackage[most]{tcolorbox}
+\raggedbottom
+\usepackage[top=1in, left=1.25in, right=1.25in, bottom=1in]{geometry} % Tamaño de papel y margen
+\usepackage{bachelorstitlepageUNAM} % Portada tesis UNAM
+\usepackage{titlesec} % Quita palabra «Capítulo» de \chapter
+\titleformat{\chapter} % Config titlesec
+	{\Large\bfseries}	% 
+	{\huge \thechapter}	% 
+	{20pt}				% 
+	{\huge}				% 
+\titlespacing*{\chapter}{0pt}{10pt}{20pt}
+
+	
+\usepackage[titletoc]{appendix} % Añade palabra «Apéndice» en Índice y define el ambiente appendices
+\usepackage{cite} % Define varios tipos de entrada en archivos *.bib
+\usepackage[T1]{fontenc} % Elimina advertencia Package spanish Warning: Replacing `OT1/cmr/bx/sc'
+\usepackage[mathletters]{ucs} % Unicode char; escribir directo caracteres griegos en Mathmode.
+% Es muy útil para aquellos que necesitan escribir varios caracteres griegos y se quieren evitar escribir cada vez \alpha \beta \gamma etc. Particularmente si tienen mapeado el teclado griego que en general se acomoda fonéticamente a QWERTY i.e. a=α b=β p=π m=μ r=ρ D=∆ d=δ 
+\usepackage{textgreek} % para usar caracteres griegos en mmacells (Entrada de código de Mathematica)
+\usepackage[utf8x]{inputenc} % Escribir con tildes
+\usepackage[es-tabla,es-nodecimaldot]{babel} % es-nodecimaldot es para usar punto como separador decimal en lugar de coma
+
+\usepackage{amsmath}
+%\DeclareMathOperator{\sinc}{sinc}
+
+\usepackage{multirow}
+%\usepackage{nicefrac}
+\usepackage{graphicx}
+
+\usepackage{caption}
+\captionsetup{font=small} % Tamaño fuente 10pt en caption
+
+\usepackage[table]{xcolor} % 
+\definecolor{mathematicaSection}{RGB}{184,67,36}
+
+\usepackage{mmacells} % Mathematica Code Input
+% En genera para otros lenguajes de programación el paquete listings es ideal.
+\mmaSet{ % Revisar la documentación de mmaCells
+  moredefined={
+  UnitConvert, 
+  diode, cavity,
+  experimentalData,
+  rDB, nAir}
+}
+\mmaDefineMathReplacement{∆}{\textDelta}
+\mmaDefineMathReplacement{θ}{\texttheta}
+\mmaDefineMathReplacement{λ}{\textlambda}
+\mmaDefineMathReplacement{μ}{\textmugreek} 
+\mmaDefineMathReplacement{ν}{\textnu}
+\mmaDefineMathReplacement{σ}{\textsigma}
+\mmaDefineMathReplacement{->}{\(\to\)}
+%\mmaDefineMathReplacement{⟦}{[\(\!\!\)[}
+%\mmaDefineMathReplacement{⟧}{]\(\!\!\)]}
+
+\usepackage{booktabs} % Tablas de datos elegantes
+\AtBeginDocument{% Espacio entre líneas para booktabs (en general funciona sin esto, pero por el formato de la tesis debe declararse y no tuve tiempo de encontrar una mejor solución) 
+	\abovetopsep=5pt
+}
+
+\usepackage{ifthen} % \if \then \else
+\usepackage{datatool} % Importar y manejar tablas de datos e.g. *.csv
+
+\usepackage{bookmark}% Elimina advertencia Package rerunfilecheck Warning: File `output.out' has changed.
+
+\usepackage{physics,siunitx} % physics define cosas como \pdv para derivadas parciales, notación de Dirac y demás. siunitx tiene una descripción para "desesperados" en su documentación que es bastante útil.
+\sisetup{ % Config. global de Siunitx
+open-bracket = {},close-bracket = {}, % quita paréntesis de números 
+range-phrase = {\translate{ a }}, % Traduce "to" a español
+list-final-separator = {\translate{ y }}, % Traduce "and" a español
+list-pair-separator = {\translate{ y }}, % Traduce "and" a español
+%parse-numbers = false, % Poder usar formato S con datatool en tablas
+table-number-alignment = center-decimal-marker, % Alinea al centro el punto decimal en tablas
+per-mode = symbol
+}
+
+\usepackage{tikz-3dplot-circleofsphere} % Hace algunas definiciones útiles para hacer diagramas con esferas en Tikz
+\usetikzlibrary{babel}
+\tikzset{> = stealth}
+
+\usepackage{todonotes} % define \todo para agregar cosas por hacer en la tesis. también define \missingfigure que es útil cuando aún no se tiene la gráfica/figura/diagrama que se quiere añadir a la mano.
+
+\usepackage{hyperref} % Agrega hipervínculos al PDF. 
+% Por alguna razón a veces regresa advertencias, pero al compilar el documento una vez más desaparecen
+\usepackage{cleveref} % \cref >> \ref considera el tipo de ambiente usado.
+\crefname{table}{Tabla}{Tablas} % cambia el nombre de Cuadro a Tabla
+% En general hyperref siempre debe cargarse al final, pero la
+% documentación de cleveref pide que se cargue después de hyperref
+
+\usepackage{subfiles} % Manejo de varios archivos, por ejemplo: capítulos escritos en documentos por separado.
+% Requiere que todos los paquetes que se necesitan se carguen en el documento principal.
+% Otro paquete que sirve el mismo propósito es standalone pero requiere mayor cuidado con la sintaxis.
+
+%------------------------------------------
+% DEFINICION DE COMANDOS
+%------------------------------------------
+
+% Resaltado condicional para datos en tablas: equal, greater than, between
+\newcommand{\rceq}[3][]{\ifthenelse{\( \DTLiseq{#3}{#2} \) \OR \( \DTLiseq{#3}{#1} \)}{\textbf{#3}}{#3}}
+\newcommand{\rcgt}[2]{\DTLifgt{#1}{#2}{{\cellcolor[gray]{0.8}} #1}{#1}}
+\newcommand{\rcbt}[3]{\DTLifnumclosedbetween{#1}{#2}{#3}{{\cellcolor[gray]{0.8}} #1}{#1}}
+
+% Sección para código de Mathematica
+\newcommand{\mmaSec}[1]{\section*{\textcolor{mathematicaSection}{#1}}}
+% Doble paréntesis de Mathematica
+%\newcommand{\mmaPartL}[1]{	[\(\!\!\)[ }
+%\newcommand{\mmaPartR}[1]{	]\(\!\!\)] }
+
+%------------------------------------------
+% PORTADA
+%------------------------------------------
+\author{Ana Valeria Deloya Andrade}
+\title{Aplicación de modelos de lenguaje de gran escala al análisis de bases de datos de artículos científicos}
+\faculty{Facultad de Ciencias}
+\degree{Licenciada en Ciencias de la Computación}
+\supervisor{Dr. José Luis Jiménez Andrade}
+\cityandyear{Ciudad Universitaria, CDMX, 2026}
+\logouni{Escudo-UNAM} % nombre del archivo del escudo de la universidad
+\logofac{Escudo-FCIENCIAS} % nombre del archivo del escudo de la facultad
+
+
+\graphicspath{{diagramas/}{fotos/}{graficas/}}% Usar gráficos de esas carpetas sin necesidad de poner el directorio completo (salvo que tengan terminación *.tex) 
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\cleardoublepage}{\hbox{}}{}{}{}
+\patchcmd{\cleardoublepage}{\vfill}{}{}{}
+\makeatother
+
+%\setlength{\parskip}{3pt}   % espacio entre párrafos
+
+\setlength{\intextsep}{11pt}
+\setlength{\textfloatsep}{13pt}
+
+\usepackage{listings}
+\usepackage{tcolorbox}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}  % fuente monoespaciada mejor
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false
+    columns=fullflexible,
+    literate=
+        {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+        {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+        {ñ}{{\~n}}1 {Ñ}{{\~N}}1
+        {¿}{{¿}}1 {¡}{{¡}}1
+}
+
+\begin{document} % INICIA el documento
+\frontmatter
+\maketitle % Crea portada
+
+%------------------------------------------
+% DEDICATORIA
+%------------------------------------------
+%Mathematical science shows what is. It is the language of unseen relations between things. But to use and apply that language, we must be able to fully to appreciate, to feel, to seize the unseen, the unconscious.
+\chapter*{}
+\vspace{2cm}
+\begin{flushright}
+	{\fontfamily{ppl}
+	\selectfont\emph{<<Mathematical science shows what is. It is the language of unseen relations between things. But to use and apply that language, we must be able to fully to appreciate, to feel, to seize the unseen, the unconscious.>>}\\
+\vspace{5mm}
+	Ada Lovelace}
+
+\end{flushright}
+\vfill
+%------------------------------------------
+% AGRADECIMIENTOS
+%------------------------------------------
+\chapter{Agradecimientos}
+%\lipsum[6-9]
+
+ 
+
+\tableofcontents
+\mainmatter
+
+\chapter{Introducción}     
+
+    \section{Contexto de la investigación}
+
+    En los últimos años, el desarrollo de la Inteligencia Artificial ha avanzado de manera acelerada, generando un impacto y transformando múltiples aspectos de la vida cotidiana. Con tecnologías como los asistentes inteligentes, por ejemplo Alexa de Amazon, comenzaron ofreciendo a los usuarios control por voz básico para reproducir música y hacer consultas para gestionar tareas domésticas; a controlar dispositivos inteligentes, ofrecer recomendaciones personalizadas e incluso responder sin acceso a internet. Este tipo de herramientas ilustran cómo la IA se ha integrado de manera natural en actividades diarias y a su vez ha modificado la forma en que nos relacionamos con la tecnología. \\
+
+    \noindent Al mismo tiempo, en el ámbito científico la Inteligencia Artificial ha impulsado innovaciones de gran alcance, específicamente para el análisis de la información y la automatización de procesos complejos. Surgiendo entre estos avances los modelos de lenguaje de gran escala LLMs, cuyo crecimiento en sus capacidades ha permitido que dejen de ser herramientas que únicamente se limitaban al procesamiento de texto para convertirse en sistemas multimodales o visuales, capaces de analizar y generar información a partir de distintos tipos de datos. \\
+    
+    \noindent Actualmente, este tipo de modelos de lenguaje pueden procesar una amplia variedad de representaciones visuales, desde las gráficas de barras y de líneas hasta contenido más complejo como los mapas generados con redes neuronales SOM, y generar interpretaciones precisas, o incluso son capaces de responder preguntas detalladas sobre el contenido visual. Dando paso con esto a nuevas posibilidades para la automatización de tareas analíticas, en especial en campos en los que las visualizaciones de datos son fundamentales como lo es la cienciometría. \\
+
+    \noindent En esta investigación se abordarán los modelos de lenguaje de gran escala LLMs y cómo es que pueden ser aprovechados en la automatización de la generación de texto a partir de representaciones visuales para el análisis cienciométrico. Para ello se llevó a cabo la implementación de un sistema que presenta, con un formato visualmente ordenado, explicaciones textuales generadas automáticamente acerca de la investigación científica en el Instituto de Ciencias Nucleares de la UNAM.
+    
+    \section{Planteamiento del problema}
+
+    En el análisis de la información científica se producen grandes volúmenes de datos que deben ser interpretados de forma clara, precisa y eficiente. En este contexto, las gráficas, tablas e indicadores cienciométricos representan herramientas esenciales para comprender aspectos como la evolución de la productividad científica, los patrones de colaboración entre instituciones e investigadores y las dinámicas de publicación del conocimiento. \\
+    
+    \noindent No obstante, la interpretación de estos elementos visuales suele requerir bastante tiempo pues se requiere atención especializada y experiencia analítica, especialmente cuando se trabaja con reportes extensos o con una gran cantidad de representaciones visuales. Ante esta problemática, la incorporación de modelos de lenguaje de gran escala LLMs ofrece una oportunidad significativa particularmente en sus versiones multimodales o visuales. Pues, como se mencionó previamente, éstos son capaces de analizar contenidos visuales y generar descripciones textuales coherentes, precisas, detalladas y ajustadas al contenido de cada gráfica o tabla. \\
+    
+    \noindent Su uso permite automatizar procesos como la redacción de reportes, la interpretación de visualizaciones y la elaboración de análisis descriptivos. Agilizando así el trabajo de quienes producen reportes cienciométricos, además de contribuír a mejorar la accesibilidad y la comunicación de resultados hacia distintos tipos de usuarios.
+
+    \noindent Para la formación profesional en Ciencias de la Computación, este tipo de actividades resulta especialmente relevante pues integran el uso de tecnologías emergentes relacionadas con la Inteligencia Artificial, la ciencia de datos y el análisis de información científica. Fortaleciendo el procesamiento analítico, el análisis computacional y del diseño e implementación de soluciones tecnológicas con ayuda de la Inteligencia Artificial aplicadas a problemas en la evaluación de la ciencia.
+
+    \section{Motivación y relevancia} //MOTIVACION Y RELEVANCIA ERA EL CAPÍTULO 1.2 EN EL INDICE TENTATIVO, ES DE ESTE CAPITULO LA DUDA QUE LE ESCRIBÍ POR CORREO DE NO SABER QUÉ PONER. YA DESPUÉS LO CAMBIÉ MEJOR A CAPÍTULO 1.3 PORQUE PIENSO QUE EL FINAL DEL 1.1 DA PIE Y SE ENTRELAZA CON EL INICIO DEL 1.2 QUE AHORA ES PLANTEAMIENTO DEL PROBLEMA CUYO FINAL PUEDE DAR PIE A LA MOTIVACIÓN Y RELEVANCIA. COMENCÉ A ESCRIBIR 1 PÁRRAFO DE ESTA PARTE PERO NO SÉ SI VOY BIEN \\
+
+    El uso de los modelos de lenguaje de gran escala LLMs en la interpretación automatizada de indicadores cienciométricos, representa no solo un avance tecnológico sino también una contribución metodológica al estudio de la actividad científica.
+
+\chapter{Análisis y visualización de datos cienciométricos y LLMs}
+
+    \section{Conceptos básicos de la cienciometría}
+
+    La ciencia desempeña un papel central en nuestra sociedad actualmente, influye en varios aspectos de nuestra vida como lo es la economía, tecnología, salud, educación y en prácticamente todos los ámbitos de la vida moderna. Siendo precisamente esa relevancia lo que hace que sea importante la existencia de espacios que permitan comprender y analizar cómo es que la ciencia interactúa con otros componentes sociales, además de su evolución como sistema de producción de conocimiento. No buscando abordar descubrimientos científicos particulares o conocer sobre la historia de ciertos científicos, sino siguiendo el propósito de aplicar las herramientas de la ciencia para estudiar a la ciencia misma, examinando a la actividad científica como un objeto susceptible de medición, observación y modelado. Puede verse a la ciencia como una entidad que puede cuantificarse, integrada por comunidades de investigadores, flujos de publicaciones, redes de colaboración y dinámicas de crecimiento por parte de instituciones. \\
+    
+    La cienciometría se dedica justamente a todo lo mencionado previamente, es el estudio del funcionamiento de la ciencia como institución social, analizando su estructura, sus patrones de producción, sus canales de comunicación y sus procesos de difusión. A través de métodos cuantitativos, permite caracterizar la evolución de la literatura científica, evaluar el impacto de la investigación, identificar tendencias emergentes y comprender cómo se organizan las comunidades académicas a nivel nacional e internacional.
+
+    
+
+    \newpage
+    
+    \section{Visualización de datos}
+
+    La visualización de datos es una herramienta fundamental para el análisis científico, pues permite transformar información compleja en representaciones gráficas que facilitan su entendimiento, interpretación y comunicación; ayudando en la identificación de patrones, tendencias, relaciones y anomalías que podrían pasar desapercibidas si la información sólo fuera transmitida mediante formatos textuales. \\
+
+    \noindent En el análisis cienciométrico se trabaja con grandes volúmenes de información, incluyendo información bibliográfica, indicadores de producción, colaboraciones entre investigadores e instituciones. Siendo así que en este contexto la visualización adquiere un papel esencial para identificar y comprender mejor tendencias, comportamientos y dinámicas estructurales que serían difíciles de detectar de otra forma. \\
+
+    %mapas generados con la red neuronal SOM, gráficas de barras, gráficas de líneas, gráficos de dispersión, gráficos de radar, diagramas de caja (box plot)
+
+    Entre las herramientas más utilizadas en la visualización de datos se encuentran las gráficas de barras, que nos permiten comparar grupos de datos de forma directa; y las gráficas de líneas, útiles para analizar tendencias temporales para la detección de periodos de crecimiento, estabilidad o cambios abruptos. \\
+
+    \begin{figure}[!htb]
+       \centering
+       \includegraphics[width=0.8\linewidth]{Tesis UNAM//fotos/5.1.1.jpeg}
+       \caption{Ejemplo de gráfica de barras y líneas}
+   \end{figure}
+    
+    \noindent También están los gráficos de dispersión, que facilitan el estudio de relaciones entre dos variables, permitiendo observar correlaciones, agrupamientos o comportamientos atípicos. Por su parte, los diagramas de caja (box plots) son utilizados para obtener una representación estadística del comportamiento de una variable, mostrando su mediana, dispersión y valores extremos; lo que los convierte en una herramienta importante en el análisis exploratorio. Asimismo, para representar múltiples dimensiones de manera simultánea es que se emplean los gráficos de radar, que permiten comparar características entre diferentes entidades en función de varios indicadores. \\
+    
+    En escenarios donde el análisis involucra alta dimensionalidad, métodos más avanzados como los mapas generados con redes neuronales SOM (Self-Organizing Maps) posibilitan la proyección de datos de muchos atributos en una malla bidimensional, esto permite visualizar patrones complejos como agrupamientos temáticos, similitudes entre autores o proximidades entre áreas de investigación. \\
+
+    \begin{figure}[!htb]
+       \centering
+       \includegraphics[width=0.9\linewidth]{Tesis UNAM//fotos/5.1.3.png}
+       \caption{Ejemplo de Self-Organizing Maps}
+   \end{figure}
+
+    %Conociendo estas herramientras de visualización, podemos percatarnos que no son solamente un recurso ilustrativo, sino un componente esencial en el análisis científico pues facilitan una mejor comprensión de datos.
+
+    \newpage
+    
+    \section{Modelos de lenguaje de gran escala (LLMs)}
+
+    
+
+\chapter{Generación automática reportes cienciométricos}
+    
+    \section{Diseño de pipeline(s) o flujo(s) de trabajo}
+
+    \newpage
+    
+    \section{Diagrama(s) de secuencia}
+
+
+    \newpage
+    
+    \section{Arquitectura general}
+
+
+\chapter{Implementación e integración}
+
+    \section{Tecnologías utilizadas}
+
+    Dado que el sistema necesitaba integrar tanto componentes visuales como sus interpretaciones generadas por modelos de lenguaje multimodales, se optó por trabajar con herramientas que permitieran una comunicación fluida entre estos elementos. Buscando, además, una forma de tener una implementación modular que facilitara así futuras extensiones en el sistema. \\
+
+    Siendo así que se optó por utilizar Streamlit como el framework del sistema, aprovechando su arquitectura basada en pages para organizar el contenido en una pantalla de inicio y cinco páginas adicionales, cada una correspondiendo a una sección del reporte cienciométrico.
+
+    % en un equipo que cuenta con un GPU de 24 Gb de memoría
+    %En primer lugar, se implementó una interfaz en Streamlit organizada en múltiples páginas. 
+
+    \newpage
+    
+    \section{Descripción del sistema}
+
+    Como se mencionó previamente, el sistema fue desarrollado con el propósito automatizar la generación de interpretaciones de datos cienciométricos a partir de elementos visuales. Su diseño generado en Streamlit está integrado por dos componentes principales: la interfaz con la que interactúa el usuario y el procesamiento de los contenidos visuales para la generación automática de sus descripciones mediante modelos de lenguaje multimodales. \\
+    
+    \noindent El sistema consiste de una pantalla de inicio y cinco secciones adicionales que funcionan como módulos independientes, cuyo contenido individual carga un conjunto de imágenes, ya sea tablas o gráficas, y genera sus interpretaciones utilizando un modelo de lenguaje que procesa entradas visuales.
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\linewidth]{Tesis UNAM//fotos/4.2.1.png}
+        \caption{Pantalla de inicio}
+    \end{figure}
+
+    Cada uno de estos módulos o páginas se enfoca en un conjunto particular de datos cienciométricos, como lo son la colaboración, citación, productividad, entre otros. Siguiendo una misma estructura para cada uno, por ejemplo, el módulo 1 tiene por título \textit{Evolución del Volumen de la Producción Científica} y su interfaz está estructurada de forma que se pueda acceder a tres pestañas temáticas entre las cuales se divide la información: (1) análisis general de la colección, (2) evolución anual de la productividad, y (3) producción en revistas con factor de impacto. \\
+
+    \noindent El contenido en estas pestañas se encuentra organizado mediante columnas, combinando texto interpretativo junto con imágenes obtenidas desde archivos locales. Además, en la parte superior de la página justo por debajo del título y antes del menú de las pestañas, se incluye una sección con un “Resumen Ejecutivo” resaltando la información más relevante entre la presentada en conjunto en la página, mostrándose esta sección en pantalla sin importar en que pestaña se encuentre el usuario.
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\linewidth]{Tesis UNAM//fotos/4.1.1.prueba.png}
+        \caption{Módulo 1 (imagen provisional en lo que termina de desarrollarse la implementación final)}
+    \end{figure}
+
+    \newpage
+
+    \noindent El texto mostrado en cada módulo se genera automáticamente a partir de las imágenes cargadas en el sistema, mediante un modelo de lenguaje multimodal se producen interpretaciones cienciométricas que describen y explican los elementos visuales presentes en cada tabla o gráfica. \\  
+
+    EN ESTA PARTE VA UNA IMAGEN DE LAS OTRAS 4 PÁGINAS RESTANTES CUANDO YA ESTÉN EN SU VERSION FINAL CON EL MODELO DE LENGUAJE \\ 
+
+    %\textit{Impacto de la Producción Científica}
+    
+    %\begin{figure}[htbp]
+     %   \centering
+      %  \includegraphics[width=0.8\linewidth]{Tesis UNAM//fotos/4.2.1.png} %PUSE LA IMAGEN DE INICIO COMO PROVISIONAL, AL TERMINAR LA IMPLEMENTACION DEL SISTEMA TENDRA SU IMAGEN CORRESPONDIENTE
+     %   \caption{Módulo 2}
+   % \end{figure}
+
+    
+   % \textit{Análisis de la Colaboración}
+    
+   % \begin{figure}[htbp]
+    %    \centering
+     %   \includegraphics[width=0.8\linewidth]{Tesis UNAM//fotos/4.2.1.png} %PUSE LA IMAGEN DE INICIO COMO PROVISIONAL, AL TERMINAR LA IMPLEMENTACION DEL SISTEMA TENDRA SU IMAGEN CORRESPONDIENTE
+     %   \caption{Módulo 3}
+   % \end{figure}
+
+
+    %\textit{Caracterización Temática de la Producción Científica}
+
+   % \begin{figure}[htbp]
+   %     \centering
+   %     \includegraphics[width=0.8\linewidth]{Tesis UNAM//fotos/4.2.1.png} %PUSE LA IMAGEN DE INICIO COMO PROVISIONAL, AL TERMINAR LA IMPLEMENTACION DEL SISTEMA TENDRA SU IMAGEN CORRESPONDIENTE
+    %    \caption{Módulo 4}
+  %  \end{figure}
+
+
+   % \textit{Contribución a los Objetivos de Desarrollo Sostenible (ODS)}
+
+ %   \begin{figure}[htbp]
+ %       \centering
+ %       \includegraphics[width=0.8\linewidth]{Tesis UNAM//fotos/4.2.1.png} %PUSE LA IMAGEN DE INICIO COMO PROVISIONAL, AL TERMINAR LA IMPLEMENTACION DEL SISTEMA TENDRA SU IMAGEN CORRESPONDIENTE
+ %       \caption{Módulo 5}
+ %   \end{figure}
+
+    \noindent Se optó por este diseño para la implementación del sistema pues da pie a que éste pueda ser expandido a futuro, permitiendo sustituir fácilmente el modelo de lenguaje utilizado, ampliar el conjunto de imágenes o integrar nuevos tipos de análisis cienciométricos añadiendo más módulos.
+    
+\chapter{Aplicación o estudio de caso}
+    \section{Análisis comparativo de modelos} 
+
+    Con el objetivo de seleccionar el modelo multimodal o visual que generará las descripciones automatizadas en el sistema, fue realizada una evaluación a la capacidad de interpretación de imágenes en distintos modelos de lenguaje. Para ello se presentaron tres imágenes provenientes del reporte cienciométrico a tres modelos distintos con la misma temperatura de 0.2, que necesita estar entre un valor de 0.0 y 0.2 para que las respuestas generadas sean más deterministas. Además, se utilizó en los tres casos de prueba el mismo prompt, priorizando la precisión y siguiendo estrictamente un formato de salida JSON. \\
+
+    \begin{tcolorbox}[breakable, title= \textbf{Primer Prompt de Prueba}, colback=orange!15, colframe=orange!80]
+    \begin{lstlisting}[language=python, gobble=8,numbers=left,xleftmargin=0.5cm]
+        messages=[
+            {"role": "system",
+             "content": "Eres un científico de datos experto en cienciometría y en la interpretación de gráficos e imágenes científicas."},
+            {"role": "user", "content": [
+                {"type": "text",
+                 "text": "Describe y analiza únicamente la información visible en la imagen proporcionada. No incluyas introducciones ni conclusiones generales, entrega solo la información técnica y relevante. Si un dato en la imagen no es legible o no está presente, no lo inventes. No inventes valores, fechas o unidades. Si es una gráfica, identifica el tipo de gráfica, ejes y qué representan, tendencias principales, picos o valles relevantes, y cualquier anotación o valor claramente legible. Mantén respuestas concisas."},
+                {"type": "image_url",
+                 "image_url": {"url": image_uri}}
+            ]}
+        ]
+    \end{lstlisting}
+    \end{tcolorbox}
+
+    \newpage
+
+    \noindent Desde la elaboración del primer prompt utilizado en las pruebas, el objetivo principal fue evitar que las respuestas generadas adoptaran un formato típico de asistentes de Inteligencia Artificial, es decir, que no incluyeran introducciones innecesarias, frases como \textit{“Claro, aquí tienes la descripción de la imagen”}, ni conclusiones generales. Asimismo, se buscó que los modelos produjeran descripciones basadas únicamente en la información que puede inferirse directamente de la imagen, sin añadir contenido inventado y en un intento por lograr esto se le pidió respuestas concisas. \\
+
+    Por otro lado, para la selección de modelos a evaluar se buscó que fueran modelos multimodales de código abierto capaces de ejecutarse localmente, ya que el proyecto se desarrolla en un entorno con una GPU de 24 GB de memoria, por lo que era indispensable seleccionar modelos compatibles con estas restricciones de hardware.
+    
+    \noindent Los elegidos fueron internvl3$\_$5-30b-a3b, pixtral-12b e internVL3$\_$5-8B-GGUF pues representan distintos rangos de tamaño y capacidades, lo que permite comparar su desempeño tanto en precisión como en eficiencia durante la interpretación de imágenes cienciométricas.\\
+   
+    En el análisis de los resultados se tomó en cuenta la coherencia y precisión en la interpretación de la imagen, en especial en relación a datos que no son mencionados en su descripción humana original en el reporte; si existe información inventada por el modelo que no podía deducirse de la imagen; y su capacidad en la identificación de los componentes relevantes en la imagen. \\
+
+    \noindent La primera imagen de prueba seleccionada corresponde a una gráfica que representa el total de artículos publicados por investigador sin incluir trabajos derivados de grandes colaboraciones abarcando un periodo entre 1996 y 2024. 
+   
+    \noindent Ésta nos permite evaluar la capacidad de los modelos de lenguaje multimodales en su interpretación de tendencias y patrones generales en los datos, variaciones anuales y cualquier información extra que puedan proporcionar a la descripción de la imagen.
+
+   \begin{figure}[!htb]
+       \centering
+       \includegraphics[width=0.8\linewidth]{Tesis UNAM//fotos/5.1.1.jpeg}
+       \caption{Tabla del total de artículos publicados por investigador, 1996-2024}
+   \end{figure}
+
+    Extraída del reporte, la descripción original para esta gráfica es la siguiente:
+
+    \noindent \textit{El número de académicos a tiempo completo asociado al ICN ha aumentado desde su fundación como entidad académica hasta la actualidad. En los últimos años, este número ha mostrado cierta estabilidad. Se muestra la producción ajustada por el número de investigadores asociados a la institución en el periodo de 1996-2024 (...). Se observa una tendencia al crecimiento. Este crecimiento pudiera asociarse no solo al crecimiento de la actividad institucional, sino también a la propia cobertura de las bases de datos, dado el aumento de la cobertura del WoS durante los últimos años.} \\
+
+    \noindent La información en esta descripción, se comparó con las respuestas generadas a continuación. \\
+
+    \begin{tcolorbox}[breakable, title= \textbf{Modelo A: internvl3$\_$5-30b-a3b}]
+    \begin{lstlisting}[language=python, gobble=8,numbers=none,xleftmargin=0.5cm]
+        El gráfico es un histograma con una línea de tendencia superpuesta.
+
+        - **Eje X (horizontal)**: Representa el "Año" desde 1950 hasta 2006.
+        - **Eje Y (vertical izquierdo)**: Mide la frecuencia acumulada en porcentaje (%), que va del 0% al 250%.
+        - **Eje Y (vertical derecho)**: No está etiquetado claramente, pero parece representar otra variable relacionada con el tiempo.
+
+        **Tendencias principales**:
+        - La línea de tendencia muestra un aumento gradual en la frecuencia acumulada hasta aproximadamente el año 1980.
+        - Después de este punto, hay una fluctuación con picos notables alrededor de los años 1995 y 2000.
+        - A partir del año 2000, la línea muestra una disminución gradual.
+
+        **Anotaciones claramente legibles**:
+        - En el eje Y izquierdo, se pueden ver valores en porcentajes: 0%, 50%, 100%, 150%, y 200%.
+        - La línea de tendencia tiene un punto marcado con una flecha alrededor del año 2006.
+
+        **Valores relevantes**:
+        - Alrededor del año 1980, la frecuencia acumulada alcanza un valor cercano al 150%.
+        - Los años 1995 y 2000 muestran picos significativos en la línea de tendencia.
+    \end{lstlisting}
+    \end{tcolorbox}
+
+    El modelo no presenta precisión pues se equivocó en el rango de años de la gráfica, pues en su descripción menciona que el eje X va desde 1950 a 2006 cuando el verdadero rango es 1996 a 2024. La información de eje Y de igual forma es incorrecta, no alcanza a detectar el texto que describe qué son los valores del eje Y tanto de la izquierda como de la derecha. En tendencias principales habla de 1980 y 1995 cuando esos años no existen en la gráfica. Y menciona que hubo una dismunución gradual a partir del 2000 cuando de lo contrario hubo un incremento. Hay muchos valores inventados. El formato de la respuesta, en cambio, es breve pero está bien distribuído en secciones. \\
+
+    \begin{tcolorbox}[breakable, title= \textbf{Modelo B: pixtral-12b}]
+    \begin{lstlisting}[language=python, gobble=4,numbers=none,xleftmargin=0.5cm]
+    El gráfico es una línea con barras superpuestas que representa datos de frecuencia acumulada sobre el tiempo.
+
+    - **Eje X (horizontal)**: Representa el tiempo en formato "dd/mm/aa" desde el 31/05 hasta el 28/06.
+    - **Eje Y (vertical)**: Muestra la frecuencia acumulada en valores que van de 0 a 250.
+  
+    La línea principal muestra una tendencia ascendente general con algunos picos y valles. Los picos más notables ocurren alrededor del 14/06 y el 28/06, mientras que los valles se observan alrededor del 31/05 y el 07/06.
+
+    Las barras superpuestas representan frecuencias acumuladas en intervalos específicos de tiempo. Cada barra muestra un aumento en la frecuencia acumulada a medida que avanza el tiempo, con picos alineados aproximadamente con los picos de la línea principal.
+
+    La nota "www.sitio.com" está presente en la esquina inferior derecha del gráfico.
+    \end{lstlisting}
+    \end{tcolorbox}
+
+    En este caso, el modelo inventa datos al hablar del eje X y los valores del eje Y los menciona correctamente pero solamente los del lado izquierdo, ignora el lado derecho a comparación del modelo anterior. Mientras que en su análisis de los datos en la tabla, no entiendo a qué se refiere con 14/06 y todos los valores que menciona pues no aparecen en la imagen. Además, menciona un sitio web que no parece estar ahí en la imagen. Por lo que inventa información y describe información que no podría deducirse de la imagen, su capacidad para detectar los componentes relevantes de la imagen es menor que el modelo anterior pues no detectó los valores para el lado derecho en el eje Y.
+
+    \begin{tcolorbox}[breakable, title= \textbf{Modelo C: internVL3$\_$5-8B-GGUF}]
+    \begin{lstlisting}[language=python, gobble=8,numbers=none,xleftmargin=0.5cm]
+        El gráfico es un histograma superpuesto con una línea de趋势.
+
+        - **Eje X (horizontal)**: Representa el "Ano", que va desde aproximadamente 1950 hasta alrededor de 2016.
+        - **Eje Y (vertical izquierdo)**: Mide la frecuencia acumulada en porcentaje, con valores que van del 0% al 250%.
+        - **Eje Y (vertical derecho)**: No está claramente etiquetado, pero parece representar otra variable relacionada con el tiempo.
+
+        **Tendencias principales**:
+        - La línea de趋势 muestra un aumento gradual en la frecuencia acumulada hasta aproximadamente el año 2005.
+        - Después de este punto, hay una ligera disminución seguida de un pequeño aumento y luego estabilización.
+
+        **Picos y valles relevantes**:
+        - Se observan varios picos a lo largo del tiempo, con los más notables alrededor de los años 1980, 2000 y especialmente entre 2005 y 2010.
+        - Los valleys corresponden a las caídas en la frecuencia acumulada justo después de estos picos.
+
+        **Anotaciones o valores claramente legibles**:
+        - No hay anotaciones adicionales o valores específicos legibles dentro del gráfico.
+    \end{lstlisting}
+    \end{tcolorbox}
+
+    Este modelo colocó un par de símbolos parecidos a escritura asiática en su descripción, LaTeX no logró escribirlo para mostrarlo pero significa Trend, es decir, tendencia. La información del eje X tiene años que no existen en la imagen, el eje Y tiene números correctos pero es correcta la interpretación de lo que significan. En general los modelos parecen no poder leer ese texto en la imagen. Narra que hubo un aumento hasta el año 2005 cuando hubo una dismunución y después menciona una ligera disminución cuando no hubo tal cosa pues fue un aumento. Además, agrega picos en cuatros años, solo dos picos son correctos en el 2000 y 2010, en 2005 hubo disminución y no hay año 1980 aunque lo mencionó. Inventa valores, sin embargo 2 de 4 veces dice la información correcta acerca del contenido dentro de la gráfica.  \\
+
+    \noindent En general, en términos del formato de las respuestas generadas mediante el primer prompt obtuvieron los resultados esperados, sin formato de asistente de Inteligencia Artificial y respuestas concisas. Sin embargo, cuenta con datos inventados, respuestas breves y con poca narrativa, se llevó a la conclusión de buscar aprovechar mejor la capacidad y recursos que pueden ofrecer los modelos de lenguaje, así que se elaboró otro prompt con más especificaciones. Además, se disminuyó la temperatura a 0.0 para que no haya información inventada en las respuestas. \\
+
+    \begin{tcolorbox}[breakable, title= \textbf{Segundo Prompt de Prueba}, colback=blue!5,colframe=blue!70]
+    \begin{lstlisting}[language=python, gobble=8,numbers=left,xleftmargin=0.5cm]
+        messages=[
+            {"role": "system",
+             "content": "Eres un científico de datos experto en cienciometría y en la interpretación de gráficos y representaciones visuales científicas."},
+            {"role": "user", "content": [
+                {"type": "text",
+                 "text": "Describe y analiza únicamente la información visible en la imagen proporcionada. No incluyas introducciones ni conclusiones generales. Agrega información que puedas deducir de la imagen para construír una narrativa extensa, detallada y precisa para un reporte cienciométrico. Si un dato en la imagen no es legible o no está presente, no lo inventes. No inventes valores, fechas o unidades. Identifica el tipo de representación visual (gráfica, tabla, etc.), ejes y qué representan, tendencias principales, picos o valles relevantes, y cualquier anotación o valor claramente legible. Que la respuesta que generes solo tenga palabras en español."},
+                {"type": "image_url",
+                 "image_url": {"url": image_uri}}
+            ]}
+        ]
+    \end{lstlisting}
+    \end{tcolorbox}
+
+
+   \noindent Este segundo prompt, que ya pide el formato que se quiere tengan los textos generados, por lo que es el definitivo para volver a realizar pruebas con la primer imagen, asimismo para utilizarlo con la segunda y tercer imágenes. \\
+
+   \noindent Los resultados para la primer gráfica de prueba fueron los siguientes: 
+
+    \begin{tcolorbox}[breakable, title= \textbf{Modelo A: internvl3$\_$5-30b-a3b}]
+    \begin{lstlisting}[language=python, gobble=8,numbers=none,xleftmargin=0.5cm]
+        La imagen muestra un gráfico de barras superpuesto con una línea de tendencia. El eje horizontal representa el tiempo, dividido en intervalos de años desde 1980 hasta 2016. El eje vertical izquierdo mide la frecuencia de citas por artículo, que va desde 0 hasta 250. La línea de trend es amarilla y muestra una tendencia general ascendente con algunos picos notables alrededor de los años 1998, 2004, 2007, 2010 y 2013. Las barras superpuestas en color azul representan la cantidad de artículos publicados cada año. Se observa un aumento gradual en el número de artículos a lo largo del tiempo, con picos alrededor de los años 1985, 1994, 2003 y 2016. La línea amarilla intersecta con las barras azules en varios puntos, indicando años donde el número de citas por artículo fue particularmente alto en comparación con la cantidad de artículos publicados.
+    \end{lstlisting}
+    \end{tcolorbox}
+
+    El modelo aún inventa años y generó una respuesta breve con descripciones muy generales, contrario a lo que se le pidió. \\
+
+    \begin{tcolorbox}[breakable, title= \textbf{Modelo B: pixtral-12b}]
+    \begin{lstlisting}[language=python, gobble=8,numbers=none,xleftmargin=0.5cm]
+        La imagen muestra un gráfico de barras superpuesto a una línea de tendencia. El eje horizontal representa el tiempo en años, desde 1980 hasta 2016, con intervalos de aproximadamente dos años. El eje vertical izquierdo mide la frecuencia de citas por artículo, que va desde 0 hasta 250. La línea de tendencia es de color amarillo y parece representar el promedio o una línea de ajuste suave sobre los datos de las barras.
+
+        Las barras azules representan la cantidad de artículos publicados cada dos años. Se observa un aumento gradual en la producción de artículos a lo largo del tiempo, con un pico notable alrededor del año 2014-2016. La línea amarilla muestra una tendencia ascendente que alcanza su máximo cerca del final del período representado.
+
+        En el eje vertical derecho, se puede ver una escala que va desde 0 hasta 350, aunque no está claramente etiquetada para qué representa. Sin embargo, podría estar relacionada con otra métrica relevante como la frecuencia de descargas o accesos a los artículos.
+
+        La línea amarilla intersecta con las barras azules en varios puntos, indicando momentos donde el número de citas por artículo coincide con el promedio general de producción. Este tipo de gráfico es útil para analizar cómo la frecuencia de publicación y las citas varían con el tiempo, permitiendo identificar periodos de alta actividad o impacto científico.
+
+        La imagen también incluye una nota en la esquina inferior derecha que menciona "www.mendeley.com", sugiriendo que los datos podrían provenir de la plataforma Mendeley, conocida por su función de seguimiento de citas y producción científica.
+    \end{lstlisting}
+    \end{tcolorbox}
+
+    En este caso, el modelo inventa datos al hablar del eje X y los valores del eje Y lado izquierdo los menciona correctamente pero solamente los del lado derecho, el lado derecho ya no lo ignora pero da valores incorrectos y menciona que no logra distinguir qué significa. Además, menciona un sitio web que no parece estar ahí en la imagen. Por lo que inventa información y describe información que no podría deducirse de la imagen, su capacidad para detectar los componentes relevantes de la imagen es mejor que con el prompt anterior pero sigue sin ser completamente precisa. 
+
+    %DE = de趋势
+    \begin{tcolorbox}[breakable, title= \textbf{Modelo C: internVL3$\_$5-8B-GGUF}]
+    \begin{lstlisting}[language=python, gobble=8,numbers=none,xleftmargin=0.5cm]
+        La imagen muestra un gráfico de barras superpuesto con una línea de趋势 que representa la evolución del número de citas por año para el artículo "A new method for determining the number of scientific citations" en el período de tiempo desde 1980 hasta 2016. 
+
+        ### Detalles del Gráfico:
+
+        - **Eje X (horizontal)**: Representa los años, numerados desde 1980 hasta 2016.
+        - **Eje Y (vertical)**: Muestra el número de citas, que va desde 0 hasta 250.
+
+        ### Características Principales:
+
+        1. **Gráfico de Barras**:
+            - Cada barra representa el número total de citations recibidas en ese año específico.
+            - Las barras aumentan y disminuyen a lo largo del tiempo, mostrando variaciones anuales en la cantidad de citas.
+
+        2. **Línea de Tendencia**:
+            - La línea amarilla superpuesta sobre las barras indica una tendencia general en el número de citations.
+            - Se observa un aumento gradual en el número de citas a lo largo del tiempo, con algunos picos notables.
+
+        3. **Picose Valles Relevantes**:
+            - **Pico Notable**: Año 2014 muestra un pico considerable en el número de citas, alcanzando uno de los valores más altos.
+            - **Valle Notable**: Años tempranos como 1980 y 1985 muestran valores bajos en comparación con años posteriores.
+
+        ### Anotaciones:
+
+        - En la esquina superior derecha, hay una anotación que dice "2", posiblemente indicando un valor relevante o una nota adicional sobre el gráfico.
+        - La fuente de los datos se menciona como "Web of Science".
+
+        ### Narrativa Detallada:
+
+        El gráfico ilustra cómo el artículo ha sido citado a lo largo de más de tres décadas. Desde 1980, donde las citas iniciales son relativamente bajas, se observa un aumento gradual en la cantidad de citations. Este incremento sugiere que el artículo ha ganado mayor relevancia y atención con el tiempo.
+
+        Los años tempranos muestran una tendencia estable con variaciones menores, pero a partir de 1990, las citas comienzan a aumentar más rápidamente. Este aumento acelerado continúa hasta alcanzar un pico significativo en 2014, donde el artículo parece haber experimentado un incremento notable en su impacto académico.
+
+        Posteriormente, aunque hay una ligera disminución después del pico de 2014, las citas permanecen relativamente altas, lo que indica que el artículo sigue siendo relevante y citado en la comunidad científica. La línea de tendencia refuerza esta observación mostrando una evolución general ascendente.
+
+        Este análisis sugiere que el artículo ha mantenido su relevancia a lo largo del tiempo, con un momento particularmente activo de citations alrededor de 2014.
+
+    \end{lstlisting}
+    \end{tcolorbox}
+
+        El modelo volvió a colocar los mismos símbolos parecidos a escritura asiática. Volvió a equivocarse en a información del eje X tiene años que no existen en la imagen, el eje Y tiene números correctos pero de nuevo no es correcta la interpretación de lo que significan. Sigue hablando de picos inexistentes en años donde hay caídas. Aún inventa información. \\
+
+    %---------------------------------------------------------------
+
+    \noindent La segunda imagen seleccionada para hacer pruebas corresponde a una gráfica de líneas que representa la evolución de la producción científica del ICN en el Web of Science, abarcando el periodo entre 1968 y 2024. Resultando especialmente útil para la evaluación en la capacidad de los modelos multimodales para interpretar cambios a lo largo del tiempo, la identificación de periodos de crecimiento o estabilidad y reconocer picos o caídas abruptas en la productividad científica. \\
+
+   \begin{figure}[!htb]
+       \centering
+       \includegraphics[width=0.9\linewidth]{Tesis UNAM//fotos/5.1.2.jpeg}
+       \caption{Evolución de la producción científica del ICN}
+   \end{figure}
+
+   \noindent En el reporte contamos con la siguiente descripción para esta gráfica:
+
+   \textit{La producción científica del ICN creció de 2 artículos en 1968, hasta llegar a más de 200 documentos por año en la actualidad. En el año 2002 se observa un pico en la gráfica, al evaluar detenidamente la producción de este año se observa que un posdoctorante (Dong, SH) asociado al ICN ese año publicó 19 artículos. Además, otros investigadores estuvieron por encima de la media como Raga, AC (9 artículos), Frank, A (8 artículos), Guven J (7 artículos) y Hirsch, JG (6 artículos).} \\
+
+   \begin{tcolorbox}[breakable, title= \textbf{Modelo A: internvl3$\_$5-30b-a3b}]
+    \begin{lstlisting}[language=python, gobble=8,numbers=none,xleftmargin=0.5cm]
+        La imagen muestra un gráfico de línea con múltiples series de datos representadas a lo largo del tiempo. El eje horizontal representa el tiempo, dividido en intervalos anuales desde 1985 hasta 2023. El eje vertical representa la cantidad de documentos o artículos, que va desde cero hasta 300.
+
+        Hay cuatro series de datos representadas con líneas de diferentes colores:
+        - "Total de Documentos" (en rojo)
+        - "Artículos SCi-GC" (en azul)
+        - "Artículos SciSGG" (en morado)
+        - "Artículos SaGG" (en verde)
+
+        Las series de datos muestran tendencias ascendentes generalmente, con variaciones en la tasa de crecimiento a lo largo del tiempo. 
+
+        En el período entre 1985 y 2004, las tres series de datos tienen valores bajos y relativamente constantes. A partir de 2004, todas las series comienzan a mostrar un aumento gradual en la cantidad de documentos publicados.
+
+        Un pico notable se observa alrededor del año 2018 para todas las series, con el valor más alto alcanzado cerca del final del período representado. La serie "Total de Documentos" muestra una creciente variabilidad a medida que avanza el tiempo, especialmente después del año 2015.
+
+        La imagen también incluye áreas coloreadas que resaltan ciertos periodos:
+        - Un área azul claro entre los años 1985 y 1994.
+        - Una área amarilla entre los años 1995 y 2003.
+        - Una área violeta desde el año 2004 hasta alrededor del 2017.
+
+        Estas áreas podrían indicar periodos de interés o cambios significativos en la producción científica representada por las series de datos.
+
+    \end{lstlisting}
+    \end{tcolorbox}
+
+    El modelo genera en el primer párrafo una descripción con fechas inventadas, mezcla lo que significan los colores en la gráfica, como la cantidad de documentos, con lo que representa el eje Y. En su descripción der la serie de datos representados con líneas de colores, se equivoca en 1 de 4. Habla de un incremento a partir del 2015, lo cual es correcto. Al parecer los años 1968 - 1972 que aparecen en la imagen los ve como 1985 - 1994; el periodo de 1994 - 1988 lo ve como 1995 - 2003; y el periodo de 1990 - 2024 lo ve como 2004 - 2017. Identifica correctamente los colores que abarcan cada periodo en la gráfica pero no lo que significan.\\
+
+    \begin{tcolorbox}[breakable, title= \textbf{Modelo B: pixtral-12b}]
+    \begin{lstlisting}[language=python, gobble=8,numbers=none,xleftmargin=0.5cm]
+        La imagen muestra un gráfico de línea con tres series de datos representadas en diferentes colores: rojo para "Total de Documento", azul para "Artículos SCG" y cyan para "Artículos SciGo". El eje horizontal representa el tiempo, con intervalos que parecen corresponder a años desde 2015 hasta alrededor de 2023. El eje vertical mide el número de documentos o artículos, con valores que van desde cero hasta aproximadamente 300.
+
+        La serie "Total de Documento" (en rojo) muestra una tendencia ascendente general, alcanzando su máximo alrededor del año 2023. La serie "Artículos SCG" (en azul) también presenta una tendencia ascendente, aunque con un crecimiento más moderado en comparación con la serie roja. La serie "Artículos SciGo" (en cyan) sigue una trayectoria similar a la de "Artículos SCG", con una ligera variabilidad pero sin alcanzar los niveles máximos observados en las otras dos series.
+
+        En el rango temprano del gráfico, alrededor de 2015-2017, todas las series comienzan cerca del cero y muestran un crecimiento inicial lento. A partir de aproximadamente 2018, se observa un aumento más pronunciado en el total de documentos y artículos, con un pico notable alrededor de 2023 para todas las series.
+
+        La gráfica incluye regiones coloreadas que parecen indicar diferentes periodos o categorías de tiempo, aunque no están etiquetadas explícitamente. Estas regiones podrían representar etapas específicas en la investigación o cambios en políticas institucionales que influyeron en la producción científica durante esos años.
+
+        En resumen, el gráfico ilustra un aumento sostenido en la producción de documentos y artículos científicos a lo largo del período analizado, con una aceleración notable hacia finales de la década.
+
+    \end{lstlisting}
+    \end{tcolorbox}
+
+    Identifica unicamente 3 de las 4 series de datos representadas con colores en la parte de hasta abajo en la imagen pero no distingue correctamente sus nombres. El periodo de tiempo que identifica para el eje X es menor que en el modelo A, lo que menciona del eje Y es correcto. Su descripción del periodo entre 2015 - 2017 es incorrecta. Menciona un incremento casi acertado pero dice que fue en 2018 cuando parece ser en 2017. No alcanza a distinguir el texto de las etiquetas que describen qué significan los colores que dividen los 3 periodos en la gráfica. \\
+
+    \begin{tcolorbox}[breakable, title= \textbf{Modelo C: internVL3$\_$5-8B-GGUF}]
+    \begin{lstlisting}[language=python, gobble=3,numbers=none,xleftmargin=0.5cm]
+    La imagen muestra un gráfico de línea con múltiples series de datos sobre el tiempo, representado en el eje horizontal (eje X) que abarca desde 1985 hasta alrededor de 2023. El eje vertical (eje Y) representa una cantidad que va desde 0 hasta 300.
+
+    En la parte izquierda del gráfico, hay tres barras coloreadas en azul claro, cada una representando un período específico: "1985-1994", "1995-2004" y "2005-2014". Estas barras parecen indicar acumulaciones o conteos de documentos o artículos en esos periodos.
+
+    A partir de 2015, el gráfico muestra varias líneas que representan diferentes categorías:
+
+    1. **Total de Documento**: Representada por una línea roja que muestra un aumento constante a lo largo del tiempo.
+    2. **Artículos SCi**: Representada por una línea azul que también aumenta con el tiempo, aunque con una tasa ligeramente inferior a la de "Total de Documento".
+    3. **Artículos Sci-GC**: Representada por una línea verde que muestra un crecimiento similar al de "Artículos SCi", pero con algunas fluctuaciones menores.
+
+    En los años posteriores a 2014, todas las series muestran tendencias ascendentes, con el pico más alto alcanzado alrededor del año 2023. La línea roja ("Total de Documento") es la que muestra el mayor crecimiento y alcanza cerca de los 300 unidades en ese punto.
+
+    Además, hay una línea discontinua azul claro que parece indicar un valor específico en el tiempo, posiblemente relacionado con alguna variable relevante dentro del contexto del estudio.
+    \end{lstlisting}
+    \end{tcolorbox}
+
+    El modelo generó una descripción que, como en los casos anteriores, menciona años incorrectos. Parece que no alcanza a distinguirlos bien pero cree que sí lo hace pues aún así continúa su análisis, tampoco distingue bien los nombres de las líneas que representa cada categoría al igual que los modelos A y B. Sería una buena interpretación si alcanzara a distinguir bien los datos que se inventa. \\
+
+    \noindent La tercer imagen corresponde a un mapa generado con redes neuronales SOM (Self-Organizing Maps), el cual representa la distribución y agrupamiento de los perfiles de desempeño de las colaboraciones del ICN con un grupo de países. En este caso no se cuenta con una descripción proveniente del reporte.
+
+   \begin{figure}[!htb]
+       \centering
+       \includegraphics[width=0.9\linewidth]{Tesis UNAM//fotos/5.1.3.png}
+       \caption{Perfiles de desempeño de las colaboraciones del ICN.}
+   \end{figure}
+
+   Para las respuestas generadas de este mapa, como tampoco hubo una correcta distinción de las fechas y datos, fue imposible tener un análisis correcto o detallado de qué está mal a diferencia de las gráficas de prueba anteriores. Se intentó pasarle a los modelos de lenguaje este mismo mapa pero con mucho mayor calidad para ver si en realidad no distingue bien los datos o simplemente inventa aunque esté claramente ahí la información. Sin embargo no compiló y generó un error el script con una imagen más grande,\textit{ Ocurrió un error inesperado: Request Entity Too Large}
+
+    \begin{tcolorbox}[breakable, title= \textbf{Modelo A: internvl3$\_$5-30b-a3b}]
+    \begin{lstlisting}[language=python, gobble=8,numbers=none,xleftmargin=0.5cm]
+        La imagen muestra un mapa del mundo con países coloreados en diferentes tonalidades que indican una variable específica. Acompañando al mapa hay tres mapas de calor que representan diferentes periodos: "Authors in 1980", "Authors between 1980 and 2000" y "Authors after 2000". Cada uno de estos mapas de calor utiliza una escala de colores que va desde el verde (valores bajos) hasta el rojo (valores altos), con un rango de valores que va desde 0.00 a más de 100.00.
+
+        En los mapas de calor, se pueden observar tendencias notables:
+
+        1. **Authors in 1980**: La India muestra una alta concentración (rojo oscuro), mientras que países como Alemania y Rusia tienen valores bajos (verde).
+        2. **Authors between 1980 and 2000**: Estados Unidos, Japón y Corea del Sur muestran picos altos, indicando una alta actividad de autores durante este período.
+        3. **Authors after 2000**: China y India continúan mostrando altas concentraciones, con un aumento significativo en comparación con los períodos anteriores.
+
+        Estas representaciones sugieren que hay variaciones regionales en la producción científica a lo largo del tiempo, con ciertos países destacándose en diferentes periodos.
+    \end{lstlisting}
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, title= \textbf{Modelo B: pixtral-12b}]
+    \begin{lstlisting}[language=python, gobble=8,numbers=none,xleftmargin=0.5cm]
+        La imagen muestra un mapa del mundo con diferentes países coloreados en tonos que van desde el verde hasta el rojo. Este colorido parece indicar una variable específica para cada país. Acompañando al mapa hay tres mapas de calor que representan diferentes años: 1986, 2004 y 2015. Estos mapas de calor utilizan un espectro de colores que va desde el verde (valores bajos) hasta el rojo (valores altos), con escalones intermedios como el amarillo y el naranja.
+
+        En los mapas de calor, se pueden observar variaciones en la intensidad del color por país y año. Por ejemplo, en 1986, países como Italia y Francia muestran tonos verdes, indicando valores bajos, mientras que otros como Alemania muestran tonos rojizos, sugiriendo valores altos. En 2004, la variación es similar, con algunos países mostrando un aumento en los valores representados por el color rojo. Para 2015, se observa una tendencia similar a los años anteriores, con variaciones notables entre los países.
+
+        La información visible sugiere que estos mapas podrían estar relacionados con alguna métrica que cambia a lo largo del tiempo, como la productividad científica, el número de publicaciones o alguna otra variable relevante en el campo de la cienciometría. Los picos y valles en los mapas de calor indican variaciones significativas en esta métrica entre diferentes países y años.
+    \end{lstlisting}
+    \end{tcolorbox}
+
+    %DE = de趋势
+    \begin{tcolorbox}[breakable, title= \textbf{Modelo C: internVL3$\_$5-8B-GGUF}]
+    \begin{lstlisting}[language=python, gobble=8,numbers=none,xleftmargin=0.5cm]
+        La imagen muestra un mapa del mundo con diferentes países coloreados en tonos que van desde el verde hasta el rojo. A la derecha del mapa hay tres mapas de calor que representan diferentes métricas científicas para varios países. Los mapas de calor están divididos en columnas, cada una correspondiente a un país o grupo de países.
+
+        1. **Mapa de calor superior izquierdo (SCI):** Este mapa muestra la distribución de Publications per Million Population (PPMP) por año. Los valores van desde 0 hasta más de 250, con el color rojo indicando los valores más altos y el verde los más bajos. Países como Corea del Sur, Japón y Alemania muestran valores altos en este mapa.
+
+        2. **Mapa de calor superior derecho (CiteScore):** Este mapa representa la distribución del CiteScore por año. Los valores van desde 0 hasta alrededor de 15, con el color rojo indicando los valores más altos y el verde los más bajos. Países como Estados Unidos, Alemania y Corea del Sur tienen valores más altos.
+
+        3. **Mapa de calor inferior (H-index):** Este mapa muestra la distribución del H-Index por año. Los valores van desde 0 hasta alrededor de 150, con el color rojo indicando los valores más altos y el verde los más bajos. Estados Unidos y Corea del Sur también muestran valores significativamente altos en este mapa.
+
+        Cada columna en los mapas de calor representa un país específico y muestra cómo se distribuyen las métricas mencionadas a lo largo del tiempo. Países como Corea del Sur, Alemania y Estados Unidos son prominentes en todas las métricas, indicando una alta actividad científica y productividad en investigación.
+    \end{lstlisting}
+    \end{tcolorbox}
+
+
+    \newpage
+   
+    \section{Generación automática de reportes cienciométricos del ICN y/o de la Facultad de Ciencias de la UNAM}
+
+\chapter{Conclusiones y trabajo a futuro}
+    \section{Utilidad en la práctica profesional}
+
+    
+
+%muy valiosos para el diagnóstico médico, el control de calidad automatizado y aplicaciones sensibles en las que la precisión es más importante que la velocidad.
+    
+    \section{Potencial para investigación y gestión científica}
+
+    
+    \section{Limitaciones y retos futuros}
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{chapter}{Bibliografía}
+\bibitem{price1963} Price, D de S. 1963. Little Science, Big Science. Columbia University, New York 119: 119.
+\bibitem{tufte1983} Edward R. Tufte. The Visual Display of Quantitative Information. 1983 / 2nd Edition 2001. Graphics Press.
+\bibitem{omiye2024} Omiye JA, Gui H, Rezaei SJ, Zou J, Daneshjou R. Large Language Models in Medicine: The Potentials and Pitfalls : A Narrative Review. Ann Intern Med. 2024 Feb;177(2):210-220. doi: 10.7326/M23-2772. Epub 2024 Jan 30. PMID: 38285984.
+\bibitem{alammar2024} Alammar, J., $\&$ Grootendorst, M. (2024). Hands-on large language models. O'Reilly.
+\bibitem{jimenez2024} José Luis Jiménez-Andrade, Ricardo Arencibia-Jorge, Miguel Robles-Pérez, Julia Tagüeña, Tzipe Govezensky, Humberto Carrillo-Calvet, Rafael A Barrio, Kimmo Kaski, Organizational changes and research performance: A multidimensional assessment, Research Evaluation, Volume 33, 2024, rvae005, https://doi.org/10.1093/reseval/rvae005
+\bibitem{tesis2003} Jiménez Andrade, José Luis. Métodos y aplicaciones de la red neuronal SOM para el análisis temporal de datos multidimensionales. Tesis de doctorado, INFOTEC 2003. https://infotec.repositorioinstitucional.mx/jspui/handle/1027/643 
+\end{thebibliography}
+
+\backmatter
+\end{document}

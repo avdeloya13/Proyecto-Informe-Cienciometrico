@@ -1,0 +1,58 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+
+En las \cref{fig:example_image,fig:example_missingfigure} observamos que\dots mientras que en la \cref{tab:datos} se muestran los\dots
+
+\begin{figure}
+	\centering
+	\includegraphics[height=5cm]{figExample}
+	\caption{Pie de imagen.}
+	\label{fig:example_image}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\missingfigure{descripción de la imagen faltante.}
+	\caption{Pie de imagen.}
+	\label{fig:example_missingfigure}
+\end{figure}
+
+%INICIO TABLA DE DATOS———————
+\DTLloaddb{data}{tablas/data.csv} % Cargar datos para la tabla
+
+\begin{table}
+	\caption{Encabezado de la tabla de datos.}
+	\centering
+\begin{tabular}{
+S[parse-numbers=false, table-format = 1.3] % Configuración de formato de las columnas
+S[parse-numbers=false, table-format = 2.4] 
+S[parse-numbers=false, table-format = 3.3] 
+S[parse-numbers=false, table-format = 1.4]
+}
+	\toprule
+	{Datos (\si{\cm})} & 
+	{Datos2} & 
+	{Datos3 (\si{\uW})} & 
+	{$n_\text{eff}$} \\
+	\midrule
+	\DTLforeach*{data}{\dat=ang,\dummy=pow,\cualquierNombre=n,\foo=mic}{% igualar al encabezado de la columna del archivo
+		\DTLifnullorempty{\dat}{% Inserta línea si encuentra celda nula o vacía en columna \angulo
+			\\[-\normalbaselineskip]% espacio
+			\cmidrule(lr){1-4}
+		}{  \rceq[0.105]{0.350}{\foo} & 
+		    \rceq{8.9403}{\dat} & 
+		    \rcgt{\dummy}{45} & 
+		    \rcbt{\cualquierNombre}{1.65}{2.06} \\
+		} % Inserta los datos en la tabla
+	}
+	\\[-\normalbaselineskip]
+    \bottomrule
+\end{tabular}
+\label{tab:datos}
+\end{table}
+%FIN TABLA DE DATOS————————
+
+\lipsum[80-82]
+
+\end{document}

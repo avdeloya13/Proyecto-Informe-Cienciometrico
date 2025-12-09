@@ -1,0 +1,49 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+
+\label{chap:example_tikz}
+
+Para el caso de un sistema de dos niveles $\ket{\uparrow}$ y $\ket{\downarrow}$, aplicar un pulso $rπ$ (donde $r$ es usualmente un múltiplo entero de 1/2) significa aplicar un hamiltoniano de interacción $\hat{H}_I$ que acopla ambos niveles, por un tiempo ($Δt$) y con un una energía de acoplamiento ($F$) suficientes para lograr el efecto deseado. Esto  puede visualizarse como una rotación de $rπ$ del vector de Bloch alrededor de algún eje en la esfera de Bloch como se muestra en la \cref{fig:bloch_sphere}, donde $\ket{ψ}$ representa un pulso en general. Este tipo de pulsos se pueden representar como una transformación de la forma \cite{nielsen2010quantum}
+
+\begin{equation*}
+	U(r)= e^{-irπX/2}=\pmqty{\cos(rπ/2) & -i\sin(rπ/2) \\ -i\sin(rπ/2) & \cos(rπ/2)}
+\end{equation*}
+
+\noindent la cual se basa en la representación estándar del operador evolución temporal sobre el hamiltoniano por una diferencia de tiempo $Δt$, es decir \( U(Δt)=e^{-i\hat{H}_IΔt/\hbar} \).
+
+En general para generar estos pulsos se utilizan láseres ya que en la aproximación dipolar su hamiltoniano es
+
+\begin{equation}
+	\hat{H}_I=\vb{E}\cdot e\vu{r}
+	\label{eq:hamiltonian_laser}
+\end{equation}
+
+\noindent donde $\vb{E}$ es la intensidad del campo eléctrico y $e\vu{r}$
+el operador dipolo eléctrico. 
+
+Debido a que la transformación es invariante frente a fases globales, se puede modificar la fase del láser de manera que los valores fuera de la diagonal de la matriz sean reales, logrando que efectivamente los pulsos $rπ$ aplicados se restrinjan a moverse sobre una circunferencia en el plano $xy$, así que podemos reescribir la \cref{eq:hamiltonian_laser}
+como 
+
+\begin{equation*}
+	\hat{H}_I=F\hat{x}
+\end{equation*}
+
+\noindent a partir de ésto tenemos que 
+
+\begin{equation*}
+	e^{-iΔtFX/2}=e^{-irπX/2}
+\end{equation*}
+
+\noindent representa un pulso $rπ$ con una cantidad de rotación
+
+\begin{equation*}
+	rπ=\frac{2}{\hbar}ΔtF
+\end{equation*}
+
+\noindent por lo que para ajustar la rotación se puede ajustar la duración del pulso láser, $Δt$, o su intensidad, $F$.
+
+\subfile{../diagramas/bloch_sphere}
+% Inserta el archivo bloch_sphere en la carpeta diagramas
+
+\end{document}
