@@ -34,11 +34,13 @@ client = openai.OpenAI(
     http_client=http_client
 )
 
-print("CLIENTE OPENAI CONECTADO")
+print(client.models.list())
+
+#print("CLIENTE OPENAI CONECTADO")
 
 # --- 5. Define la ruta de la imagen y codifícala ---
 # **ASEGÚRATE DE CAMBIAR ESTO POR LA RUTA REAL DE TU IMAGEN**
-IMAGE_PATH = "img_prueba.jpeg" 
+IMAGE_PATH = "img_prueba2.png" 
 try:
     base64_image = encode_image(IMAGE_PATH)
 except FileNotFoundError:
@@ -57,12 +59,12 @@ try:
     completion = client.chat.completions.create(
         model="bartowski/OpenGVLab_InternVL3_5-8B-GGUF", # Modelo solicitado
         messages=[
-            {"role": "system", "content": "content": "Eres un científico de datos experto en cienciometría y en la interpretación de gráficos e imágenes científicas."},
+            {"role": "system", "content": "Eres un científico de datos experto en cienciometría y en la interpretación de gráficos y representaciones visuales científicas"},
             {"role": "user", "content": [
                 {
                     # El prompt de texto
                     "type": "text", 
-                    "text": "Describe y analiza únicamente la información visible en la imagen proporcionada. No incluyas introducciones ni conclusiones generales, entrega solo la información técnica y relevante. Si un dato en la imagen no es legible o no está presente, no lo inventes. No inventes valores, fechas o unidades. Si es una gráfica, identifica el tipo de gráfica, ejes y qué representan, tendencias principales, picos o valles relevantes, y cualquier anotación o valor claramente legible. Mantén resultados concisos."
+                    "text": "Describe y analiza únicamente la información visible en la imagen proporcionada. No incluyas introducciones, ni conclusiones generales. Agrega información que puedas deducir de la imagen para construír una narrativa extensa, detallada y precisa para un reporte cienciométrico. Si un dato en la imagen no es legible o no está presente, no lo inventes. No inventes valores, fechas o unidades. Identifica el tipo de representación visual (gráfica, tabla, etc.), ejes y qué representan, tendencias principales, picos o valles relevantes, y cualquier anotación o valor claramente legible. Que la respuesta que generes solo tenga palabras en español."
                 },
                 {
                     # La imagen codificada
@@ -71,12 +73,12 @@ try:
                 }
             ]}
         ],
-        temperature=0.2, #La temperatura debe estar entre 0.0 y 0.2 genera respuestas más deterministas y precisas
+        temperature=0.0, #La temperatura debe estar entre 0.0 y 0.2 genera respuestas más deterministas y precisas
     )
     
-    print("\n--- Respuesta del Modelo ---")
+   # print("\n--- Respuesta del Modelo ---")
     print(completion.choices[0].message.content)
-    print("---------------------------\n")
+   # print("---------------------------\n")
 
 except openai.AuthenticationError as e:
     print("\nError de autenticación: Verifica tu usuario y contraseña en la base_url.")
