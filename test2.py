@@ -1,6 +1,10 @@
 import openai
 import base64
 import httpx
+import lmstudio as lms
+
+model = lms.llm()
+model.unload()
 
 # --- Función de utilidad para codificar la imagen ---
 def encode_image(image_path):
@@ -40,7 +44,7 @@ print(client.models.list())
 
 # --- 5. Define la ruta de la imagen y codifícala ---
 # **ASEGÚRATE DE CAMBIAR ESTO POR LA RUTA REAL DE TU IMAGEN**
-IMAGE_PATH = "img_prueba2.png" 
+IMAGE_PATH = "img_prueba.jpeg" 
 try:
     base64_image = encode_image(IMAGE_PATH)
 except FileNotFoundError:
@@ -54,10 +58,10 @@ image_uri = f"data:image/jpeg;base64,{base64_image}" # Asumiendo que es JPEG. Ca
 
 # --- 6. Llamada al modelo con contenido multimodal (texto e imagen) ---
 try:
-    print(f"\nEnviando solicitud al modelo: bartowski/OpenGVLab_InternVL3_5-8B-GGUF...")
+    print(f"\nEnviando solicitud al modelo: google/gemma-3-27b...")
     
     completion = client.chat.completions.create(
-        model="bartowski/OpenGVLab_InternVL3_5-8B-GGUF", # Modelo solicitado
+        model="google/gemma-3-27b", # Modelo solicitado
         messages=[
             {"role": "system", "content": "Eres un científico de datos experto en cienciometría y en la interpretación de gráficos y representaciones visuales científicas"},
             {"role": "user", "content": [
