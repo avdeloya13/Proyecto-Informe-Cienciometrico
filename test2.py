@@ -4,7 +4,6 @@ import httpx
 import lmstudio as lms
 
 model = lms.llm()
-model.unload()
 
 # --- Función de utilidad para codificar la imagen ---
 def encode_image(image_path):
@@ -38,8 +37,6 @@ client = openai.OpenAI(
     http_client=http_client
 )
 
-print(client.models.list())
-
 #print("CLIENTE OPENAI CONECTADO")
 
 # --- 5. Define la ruta de la imagen y codifícala ---
@@ -63,12 +60,13 @@ try:
     completion = client.chat.completions.create(
         model="google/gemma-3-27b", # Modelo solicitado
         messages=[
-            {"role": "system", "content": "Eres un científico de datos experto en cienciometría y en la interpretación de gráficos y representaciones visuales científicas"},
+            {"role": "system", "content":  "Eres un científico de datos experto en cienciometría y en la interpretación de gráficos y representaciones visuales científicas. Debes priorizar la precisión y evitar cualquier suposición no respaldada visualmente."},
             {"role": "user", "content": [
                 {
                     # El prompt de texto
                     "type": "text", 
-                    "text": "Describe y analiza únicamente la información visible en la imagen proporcionada. No incluyas introducciones, ni conclusiones generales. Agrega información que puedas deducir de la imagen para construír una narrativa extensa, detallada y precisa para un reporte cienciométrico. Si un dato en la imagen no es legible o no está presente, no lo inventes. No inventes valores, fechas o unidades. Identifica el tipo de representación visual (gráfica, tabla, etc.), ejes y qué representan, tendencias principales, picos o valles relevantes, y cualquier anotación o valor claramente legible. Que la respuesta que generes solo tenga palabras en español."
+                    "text": "Analiza únicamente la información visible en la imagen proporcionada. No incluyas introducciones ni conclusiones generales. Estructura tu respuesta obligatoriamente en las siguientes secciones: 1) Elementos explícitamente legibles en la imagen. 2) Componentes visuales identificables (tipo de gráfica, ejes, colores, símbolos). 3) Patrones visuales generales observables (tendencias, aumentos o disminuciones). 4) Inferencias permitidas, claramente marcadas como inferencias. 5) Elementos no legibles, ambiguos o no identificables. No menciones años específicos, valores exactos, rangos temporales, intersecciones o significados de ejes a menos que estén claramente indicados y sean legibles en la imagen. Si un dato no puede leerse con claridad, indícalo explícitamente como no legible o no identificable. No inventes valores, fechas, unidades ni significados semánticos. La respuesta debe estar escrita únicamente en español y mantener un tono técnico."
+                            
                 },
                 {
                     # La imagen codificada
@@ -92,3 +90,4 @@ except openai.APIConnectionError as e:
     print(e)
 except Exception as e:
     print(f"\nOcurrió un error inesperado: {e}")
+
