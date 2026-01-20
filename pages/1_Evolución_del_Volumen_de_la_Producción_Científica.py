@@ -68,10 +68,10 @@ def display_interpretacion(img_key, img_path):
         st.markdown(st.session_state.interpretaciones[img_key])
 
         if st.button("Regenerar", key=f"regen_{img_key}"):
-            st.empty()
+            st.session_state.interpretaciones[img_key] = st.empty()
             with st.spinner("Cargando..."):
                 st.session_state.interpretaciones[img_key] = generator(img_path)
-                #st.rerun()
+            st.rerun()
     else:
         st.empty()
 
