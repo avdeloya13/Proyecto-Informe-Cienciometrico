@@ -1,9 +1,3 @@
-
-#En cada una de las paginas de las secciones, se va a modificar la funcion display_image para mandar a llamar la funcion de este script describe_image
-
-#description = describe_image(path)
-#st.write(description)
-
 import openai
 import base64
 import httpx
