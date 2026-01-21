@@ -31,8 +31,10 @@ image_two_caption = "Red de colaboración entre investigadores del ICN 2014-2024
 sec_two_title = "Colaboración Nacional"
 
 image_three_path = "assets/images/sec_3_img_3.png"
+image_three_caption = "Colaboración Nacional con la UNAM"
 
 image_four_path = "assets/images/sec_3_img_4.png"
+image_four_caption = "Colaboración Nacional con la UNAM"
 
 # --- Subsección 3
 sec_three_title = '''Colaboración Internacional'''
@@ -53,6 +55,7 @@ image_eight_caption = "Distribución y agrupamiento de los perfiles de desempeñ
 sec_four_title = "Género"
 
 image_nine_path = "assets/images/sec_3_img_9.png"
+image_nine_caption = "Distribución de Género en la Red de Colaboración"
 
 #Para mostrar imágenes con caption y manejo de error.
 def display_image(path, caption):
@@ -65,14 +68,14 @@ def display_image(path, caption):
         st.image(path, caption=caption, width="stretch")
 
 #Para mostrar la interpretacion de la imagen cuya llave y path pasan como parametro
-def display_interpretacion(img_key, img_path):
+def display_interpretacion(img_key, img_path, img_caption=None):
     if img_key in st.session_state.interpretaciones:
         st.markdown(st.session_state.interpretaciones[img_key])
 
         if st.button("Regenerar", key=f"regen_{img_key}"):
             st.session_state.interpretaciones[img_key] = st.empty()
-            with st.spinner("Cargando..."):
-                st.session_state.interpretaciones[img_key] = generator(img_path)
+            with st.spinner("Regenerando..."):
+                st.session_state.interpretaciones[img_key] = generator(img_path, img_caption)
             st.rerun()
     else:
         st.empty()
@@ -102,15 +105,15 @@ headerbutt1, headerbutt2 = st.columns([7, 2])
 with headerbutt2:
     if st.button("Generar interpretaciones"):
         with st.spinner("Generando..."):
-            st.session_state.interpretaciones["img16"] = generator(image_one_path)
-            st.session_state.interpretaciones["img17"] = generator(image_two_path)
-            st.session_state.interpretaciones["img18"] = generator(image_three_path)
-            st.session_state.interpretaciones["img19"] = generator(image_four_path)
-            st.session_state.interpretaciones["img20"] = generator(image_five_path)
-            st.session_state.interpretaciones["img21"] = generator(image_six_path)
-            st.session_state.interpretaciones["img22"] = generator(image_seven_path)
-            st.session_state.interpretaciones["img23"] = generator(image_eight_path)
-            st.session_state.interpretaciones["img24"] = generator(image_nine_path)
+            st.session_state.interpretaciones["img16"] = generator(image_one_path, image_one_caption)
+            st.session_state.interpretaciones["img17"] = generator(image_two_path, image_two_caption)
+            st.session_state.interpretaciones["img18"] = generator(image_three_path, image_three_caption)
+            st.session_state.interpretaciones["img19"] = generator(image_four_path, image_four_caption)
+            st.session_state.interpretaciones["img20"] = generator(image_five_path, image_five_caption)
+            st.session_state.interpretaciones["img21"] = generator(image_six_path, image_six_caption)
+            st.session_state.interpretaciones["img22"] = generator(image_seven_path, image_seven_caption)
+            st.session_state.interpretaciones["img23"] = generator(image_eight_path, image_eight_caption)
+            st.session_state.interpretaciones["img24"] = generator(image_nine_path, image_nine_caption)
             st.session_state.generadas = True
 
 st.markdown("---")
@@ -140,7 +143,7 @@ with tab1:
 
     col1, col2 = st.columns([2, 3])
     with col1:
-        display_interpretacion("img16", image_one_path)
+        display_interpretacion("img16", image_one_path, image_one_caption)
 
     with col2:
         display_image(image_one_path, caption=image_one_caption)
@@ -150,7 +153,7 @@ with tab1:
         display_image(image_two_path, caption=image_two_caption)
 
     with col4:
-        display_interpretacion("img17", image_two_path)
+        display_interpretacion("img17", image_two_path, image_two_caption)
 
     st.markdown("---")
 
@@ -162,7 +165,7 @@ with tab2:
 
     col1, col2 = st.columns(2)
     with col1:
-        display_image(image_three_path, "Colaboración Nacional con la UNAM")
+        display_image(image_three_path, image_three_caption)
 
     with col2:
         display_interpretacion("img18", image_three_path)
@@ -172,7 +175,7 @@ with tab2:
         display_interpretacion("img19", image_four_path)
 
     with col4:
-        display_image(image_four_path, "Colaboración Nacional con la UNAM")
+        display_image(image_four_path, image_four_caption)
 
     st.markdown("---")
 
@@ -187,14 +190,14 @@ with tab3:
     with col1:
         st.markdown("#### **Periodo 1980-2024**")
         with st.expander("Ver Detalles"):
-            display_interpretacion("img20", image_five_path)
+            display_interpretacion("img20", image_five_path, image_five_caption)
 
         display_image(image_five_path, image_five_caption)
 
     with col2:
         st.markdown("#### **Periodo 2020-2024**")
         with st.expander("Ver Detalles"):
-            display_interpretacion("img21", image_six_path)
+            display_interpretacion("img21", image_six_path, image_six_caption)
         
         display_image(image_six_path, image_six_caption)
 
@@ -203,14 +206,14 @@ with tab3:
     with col3_3:
         st.markdown("#### **Periodo 1980-2024**")
         with st.expander("Ver Detalles"):
-            display_interpretacion("img22", image_seven_path)
+            display_interpretacion("img22", image_seven_path, image_seven_caption)
 
         display_image(image_seven_path, image_seven_caption)
 
     with col3_4:
-        st.markdown("#### **Periodo 2020-2024**")
+        st.markdown("#### **Periodo 2020-2024**") #ERROR
         with st.expander("Ver Detalles"):
-            display_interpretacion("img23", image_eight_path)
+            display_interpretacion("img23", image_eight_path, image_eight_caption)
         
         display_image(image_eight_path, image_eight_caption)
 
@@ -227,6 +230,6 @@ with tab4:
         display_interpretacion("img24", image_nine_path)
 
     with col2: 
-        display_image(image_nine_path, "Distribución de Género en la Red de Colaboración")
+        display_image(image_nine_path, image_nine_caption)
 
     st.markdown("---")

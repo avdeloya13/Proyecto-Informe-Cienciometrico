@@ -55,14 +55,14 @@ def display_image(path, caption):
         st.image(path, caption=caption, width="stretch")
 
 #Para mostrar la interpretacion de la imagen cuya llave y path pasan como parametro
-def display_interpretacion(img_key, img_path):
+def display_interpretacion(img_key, img_path, img_caption=None):
     if img_key in st.session_state.interpretaciones:
         st.markdown(st.session_state.interpretaciones[img_key])
 
         if st.button("Regenerar", key=f"regen_{img_key}"):
             st.session_state.interpretaciones[img_key] = st.empty()
-            with st.spinner("Cargando..."):
-                st.session_state.interpretaciones[img_key] = generator(img_path)
+            with st.spinner("Regenerando..."):
+                st.session_state.interpretaciones[img_key] = generator(img_path, img_caption)
             st.rerun()
     else:
         st.empty()
@@ -92,18 +92,18 @@ headerbutt1, headerbutt2 = st.columns([7, 2])
 with headerbutt2:
     if st.button("Generar interpretaciones"):
         with st.spinner("Generando..."):
-            st.session_state.interpretaciones["img9"] = generator(image_one_path)
-            st.session_state.interpretaciones["img10"] = generator(image_two_path)
-            st.session_state.interpretaciones["img11"] = generator(image_three_path)
-            st.session_state.interpretaciones["img12"] = generator(image_four_path)
-            st.session_state.interpretaciones["img13"] = generator(image_five_path)
-            st.session_state.interpretaciones["img14"] = generator(image_six_path)
-            st.session_state.interpretaciones["img15"] = generator(image_seven_path)
+            st.session_state.interpretaciones["img9"] = generator(image_one_path, image_one_caption)
+            st.session_state.interpretaciones["img10"] = generator(image_two_path, image_two_caption)
+            st.session_state.interpretaciones["img11"] = generator(image_three_path, image_three_caption)
+            st.session_state.interpretaciones["img12"] = generator(image_four_path, image_four_caption)
+            st.session_state.interpretaciones["img13"] = generator(image_five_path, image_five_caption)
+            st.session_state.interpretaciones["img14"] = generator(image_six_path, image_six_caption)
+            st.session_state.interpretaciones["img15"] = generator(image_seven_path, image_seven_caption)
             st.session_state.generadas = True
 
 st.markdown("---")
 
-st.header("Información Destacada")
+st.header("Información Destacada del Impacto")
 metric_col1, metric_col2, metric_col3, metric_col4 = st.columns(4)
 
 with metric_col1:
@@ -127,7 +127,7 @@ with tab1:
 
     col1, col2 = st.columns([2, 3]) #2/5 partes para texto, 3/5 para imagen
     with col1:
-        display_interpretacion("img9", image_one_path)    
+        display_interpretacion("img9", image_one_path, image_one_caption)    
 
     with col2:   
         display_image(image_one_path, image_one_caption)
@@ -142,7 +142,7 @@ with tab2:
 
     col1, col2 = st.columns([2, 3]) #2/5 partes para texto, 3/5 para imagen
     with col1:
-        display_interpretacion("img11", image_three_path)
+        display_interpretacion("img11", image_three_path, image_three_caption)
        # st.success(" El impacto normalizado experimentó un crecimiento sostenido post-2005, superando consistentemente el promedio mundial (CNCI > 1) entre 2011 y 2016.")
 
     with col2:
@@ -158,7 +158,7 @@ with tab2:
         display_image(image_four_path, image_four_caption)
 
     with col4:
-        display_interpretacion("img12", image_four_path)
+        display_interpretacion("img12", image_four_path, image_four_caption)
         #st.info(" Aunque la presencia fue nula en los 80/90, el instituto registró picos de más del 5% de artículos en el Top 1% mundial entre 2010 y 2012.")
 
     st.markdown("---")
@@ -171,12 +171,12 @@ with tab2:
         st.markdown("#### **Citas Recibidas**")
         display_image(image_two_path, image_two_caption)
         with st.expander("Ver Detalles"):
-            display_interpretacion("img10", image_two_path)
+            display_interpretacion("img10", image_two_path, image_two_caption)
 
     with col6:
         st.markdown("#### **Documentos en Top 10%**")
-        display_interpretacion("img13", image_five_path)
         display_image(image_five_path, image_five_caption)
+        display_interpretacion("img13", image_five_path, image_five_caption)
 
     st.markdown("---")
 
@@ -187,12 +187,12 @@ with tab2:
     with col7:
         st.markdown("#### **Evolución del Percentil Promedio**")
         display_image(image_six_path, image_six_caption)
-        display_interpretacion("img14", image_six_path)
+        display_interpretacion("img14", image_six_path, image_six_caption)
 
     with col8:
         st.markdown("#### **Perfil Multidimensional de Desempeño**")
         display_image(image_seven_path, image_seven_caption)
         with st.expander("Ver Detalles"):
-            display_interpretacion("img15", image_seven_path)
+            display_interpretacion("img15", image_seven_path, image_seven_caption)
 
     st.markdown("---")

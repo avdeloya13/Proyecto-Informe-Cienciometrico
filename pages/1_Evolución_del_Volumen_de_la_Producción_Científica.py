@@ -62,14 +62,14 @@ def display_image(path, caption):
         st.image(path, caption=caption, width="stretch")
 
 #Para mostrar la interpretacion de la imagen cuya llave y path pasan como parametro
-def display_interpretacion(img_key, img_path):
+def display_interpretacion(img_key, img_path, img_caption=None):
     if img_key in st.session_state.interpretaciones:
         st.markdown(st.session_state.interpretaciones[img_key])
 
         if st.button("Regenerar", key=f"regen_{img_key}"):
             st.session_state.interpretaciones[img_key] = st.empty()
-            with st.spinner("Cargando..."):
-                st.session_state.interpretaciones[img_key] = generator(img_path)
+            with st.spinner("Regenerando..."):
+                st.session_state.interpretaciones[img_key] = generator(img_path, img_caption)
             st.rerun()
     else:
         st.empty()
@@ -99,14 +99,14 @@ headerbutt1, headerbutt2 = st.columns([7, 2])
 with headerbutt2:
     if st.button("Generar interpretaciones"):
         with st.spinner("Generando..."):
-            st.session_state.interpretaciones["img1"] = generator(image_one_path)
-            st.session_state.interpretaciones["img2"] = generator(image_two_path)
-            st.session_state.interpretaciones["img3"] = generator(image_three_path)
-            st.session_state.interpretaciones["img4"] = generator(image_four_path)
-            st.session_state.interpretaciones["img5"] = generator(image_five_path)
-            st.session_state.interpretaciones["img6"] = generator(image_six_path)
-            st.session_state.interpretaciones["img7"] = generator(image_seven_path)
-            st.session_state.interpretaciones["img8"] = generator(image_eight_path)
+            st.session_state.interpretaciones["img1"] = generator(image_one_path, image_one_caption)
+            st.session_state.interpretaciones["img2"] = generator(image_two_path, image_two_caption)
+            st.session_state.interpretaciones["img3"] = generator(image_three_path, image_three_caption)
+            st.session_state.interpretaciones["img4"] = generator(image_four_path, image_four_caption)
+            st.session_state.interpretaciones["img5"] = generator(image_five_path, image_five_caption)
+            st.session_state.interpretaciones["img6"] = generator(image_six_path, image_six_caption)
+            st.session_state.interpretaciones["img7"] = generator(image_seven_path, image_seven_caption)
+            st.session_state.interpretaciones["img8"] = generator(image_eight_path, image_eight_caption)
             st.session_state.generadas = True
 
 st.markdown("---")
@@ -136,7 +136,7 @@ with tab1:
     #Fila 1
     col1, col2 = st.columns([1.6, 1.4])
     with col1:
-        display_interpretacion("img1", image_one_path)
+        display_interpretacion("img1", image_one_path, image_one_caption)
 
     with col2:
         display_image(image_one_path, image_one_caption)
@@ -148,7 +148,7 @@ with tab1:
 
     col1, col2 = st.columns([1.6, 1.4])
     with col1:
-        display_interpretacion("img2", image_two_path)
+        display_interpretacion("img2", image_two_path, image_two_caption)
 
     with col2:
         display_image(image_two_path, image_two_caption)
@@ -162,7 +162,7 @@ with tab2:
     #Fila 1
     col1, col2 = st.columns(2)
     with col1:
-        display_interpretacion("img3", image_three_path)
+        display_interpretacion("img3", image_three_path, image_three_caption)
         	
     with col2:
         display_image(image_three_path, image_three_caption)
@@ -173,14 +173,14 @@ with tab2:
     #Fila 2
     col3, col4 = st.columns(2)
     with col3:
-        display_interpretacion("img4", image_four_path)
-
         display_image(image_four_path, image_four_caption)
 
-    with col4:
-        display_interpretacion("img5", image_five_path)
+        display_interpretacion("img4", image_four_path, image_four_caption)
 
+    with col4:
         display_image(image_five_path, image_five_caption)
+
+        display_interpretacion("img5", image_five_path, image_five_caption)
 
 #=========================================================================
 #PESTAÑA 3
@@ -191,7 +191,7 @@ with tab3:
     #Fila 1
     col1, col2 = st.columns([0.6, 1.4])
     with col1:
-        display_interpretacion("img6", image_six_path)
+        display_interpretacion("img6", image_six_path, image_six_caption)
 
     with col2:
         display_image(image_six_path, image_six_caption)
@@ -201,13 +201,13 @@ with tab3:
     with col3:
         display_image(image_seven_path, image_seven_caption)
     with col4:
-        display_interpretacion("img7", image_seven_path)
+        display_interpretacion("img7", image_seven_path, image_seven_caption)
 
     st.markdown("---")
     st.subheader("Ley de Bradford")
 
-    display_interpretacion("img8", image_eight_path)
-
     display_image(image_eight_path, image_eight_caption)
+
+    display_interpretacion("img8", image_eight_path, image_eight_caption)
 
 st.markdown("---")
