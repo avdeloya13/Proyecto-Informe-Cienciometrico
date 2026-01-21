@@ -1,7 +1,6 @@
 #SECCION 1
 
 import streamlit as st
-import lmstudio as lms
 from llm.llm_generator import generator
 import os
 
@@ -12,7 +11,7 @@ if "generadas" not in st.session_state:
     st.session_state.generadas = False
 
 st.set_page_config(
-    page_title="Reporte Cienciométrico - Sección 1",
+    page_title="Evolución del Volumen de la Producción Científica",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -112,7 +111,7 @@ with headerbutt2:
 
 st.markdown("---")
 
-st.header("Resumen Ejecutivo")
+st.header("Información Destacada")
 metric_col1, metric_col2, metric_col3, metric_col4 = st.columns(4)
 
 with metric_col1:

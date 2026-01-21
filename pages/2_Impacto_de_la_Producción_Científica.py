@@ -11,7 +11,7 @@ if "generadas" not in st.session_state:
     st.session_state.generadas = False
 
 st.set_page_config(
-    page_title="Reporte Cienciométrico - Sección 2",
+    page_title="Impacto de la Producción Científica",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -22,7 +22,7 @@ main_title = "Impacto de la Producción Científica"
 sec_one_title = "Análisis Comparativo"
 
 image_one_path = "assets/images/sec_2_img_1.png"
-image_one_caption = "Tabla 1. Indicadores de impacto"
+image_one_caption = "Indicadores de impacto"
 
 #Pestaña 2 imagenes
 sec_two_title = "Evolución del Impacto"
@@ -103,36 +103,17 @@ with headerbutt2:
 
 st.markdown("---")
 
-st.header("Indicadores de Impacto Clave")
+st.header("Información Destacada")
 metric_col1, metric_col2, metric_col3, metric_col4 = st.columns(4)
 
 with metric_col1:
-    st.metric(
-        label="Media Autores / Documento", 
-        value="4.01", 
-        help="Excluyendo grandes colaboraciones, indica el tamaño promedio de los equipos de investigación."
-    )
+    st.metric( "Documentos Citados","84.09%")
 with metric_col2:
-    st.metric(
-        label="Coautoría Internacional", 
-        value="56.17%", 
-        delta="Alta proyección", 
-        help="Porcentaje de documentos con al menos un autor de una institución extranjera."
-    )
+    st.metric("Percentiles Promedio de Artículo", "47.92", help="Con grandes colaboraciones.")
 with metric_col3:
-    st.metric(
-        label="Países Colaboradores", 
-        value="90", 
-        help="Número total de países con al menos una coautoría con el ICN."
-    )
+    st.metric("Impacto de Citación Normalizado por Revista", "0.99%", delta="Para todo el periodo", help="Se comparó el impacto de citación de los artículos con GC con el promedio de la revista en que se publicó.")
 with metric_col4:
-    st.metric(
-        label="Principal Colaborador", 
-        value="USA", 
-        delta="19.33% de la Colaboración Total",
-        delta_color="normal",
-        help="País con la mayor frecuencia de coautorías."
-    )
+    st.metric("Índice H", "141", delta="En todo el periodo", help="Con GC, el índice H es considerablemente más alto")
 
 
 #PESTAÑAS
@@ -182,15 +163,14 @@ with tab2:
 
     st.markdown("---")
 
-    st.markdown("### Perspectiva Global: Tendencia de Citas y Top 10%")
+    st.markdown("### Perspectiva Global: Tendencia de Citas y Top 100")
   #  st.markdown("Esta sección agrupa la evolución de la tendencia de citas brutas y el porcentaje en el Top 10%, permitiendo una visión comparativa del impacto amplio.")
-
 
     col5, col6 = st.columns(2) 
     with col5:
         st.markdown("#### **Citas Recibidas**")
         display_image(image_two_path, image_two_caption)
-        with st.expander("Ver Definiciones de Métricas"):
+        with st.expander("Ver Detalles"):
             display_interpretacion("img10", image_two_path)
 
     with col6:
@@ -206,10 +186,13 @@ with tab2:
     col7, col8 = st.columns(2) 
     with col7:
         st.markdown("#### **Evolución del Percentil Promedio**")
-        display_interpretacion("img14", image_six_path) #NUEVO
         display_image(image_six_path, image_six_caption)
+        display_interpretacion("img14", image_six_path)
 
     with col8:
         st.markdown("#### **Perfil Multidimensional de Desempeño**")
-        display_interpretacion("img15", image_seven_path) #NUEVO
         display_image(image_seven_path, image_seven_caption)
+        with st.expander("Ver Detalles"):
+            display_interpretacion("img15", image_seven_path)
+
+    st.markdown("---")

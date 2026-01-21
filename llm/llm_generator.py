@@ -36,17 +36,15 @@ def generator(image_path):
             {"role": "system", "content":  "Eres un científico de datos experto en cienciometría y en la interpretación de gráficos y representaciones visuales científicas. Debes priorizar la precisión y evitar cualquier suposición no respaldada visualmente."},
             {"role": "user", "content": [
                 {
-                    # El prompt de texto
                     "type": "text", 
-                    "text": "Analiza únicamente la información visible en la imagen proporcionada. Redacta un párrafo con un tono técnico y formal de un reporte científico que contenga obligatoriamente lo siguiente: Elementos explícitamente legibles en la imagen, componentes visuales identificables (si es una gráfica o un mapa generados con redes neuronales SOM, ejes, colores, símbolos), patrones visuales generales observables (tendencias, aumentos o disminuciones), las inferencias son permitidas pero deben ser claramente marcadas como inferencias, abstente de mencionar elementos no legibles, ambiguos o no identificables; no menciones años específicos, valores exactos, rangos temporales, intersecciones o significados de ejes a menos que estén claramente indicados y sean legibles en la imagen; si un dato no puede leerse con claridad, indícalo explícitamente como no legible o no identificable; no inventes valores, fechas, unidades ni significados semánticos. La respuesta debe estar escrita únicamente con letras del alfabeto latino. No incluyas introducciones ni conclusiones generales ni títulos de secciones."                            
+                    "text": "Analiza únicamente la información visible en la imagen proporcionada. Redacta un párrafo con un tono técnico y formal de un reporte científico que contenga obligatoriamente lo siguiente: Elementos explícitamente legibles en la imagen, componentes visuales identificables (si es una gráfica, un mapa generado con redes neuronales SOM, una tabla u otro tipo de representación visual; ejes, colores, símbolos), patrones visuales generales observables (tendencias, aumentos o disminuciones), las inferencias son permitidas pero deben ser claramente marcadas como inferencias, abstente de mencionar elementos no legibles, ambiguos o no identificables; no menciones años específicos, valores exactos, rangos temporales, intersecciones o significados de ejes a menos que estén claramente indicados y sean legibles en la imagen; si un dato no puede leerse con claridad, indícalo explícitamente como no legible o no identificable; no inventes valores, fechas, unidades ni significados semánticos. La respuesta debe estar escrita únicamente con letras del alfabeto latino. No incluyas introducciones ni conclusiones generales ni títulos de secciones."                            
                 },
                 {
-                    # Imagen codificada
                     "type": "image_url",
                     "image_url": {"url": image_uri}
                 }
             ]}
-        ], #Prioriza la precisión y sigue estrictamente el formato de salida JSON solicitado en la solicitud del usuario. 
+        ], 
             temperature=0.7
         )
         return completion.choices[0].message.content

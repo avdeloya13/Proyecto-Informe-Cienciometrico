@@ -1,10 +1,17 @@
 #SECCION 5
 
 import streamlit as st
+from llm.llm_generator import generator
 import os
 
+if "interpretaciones" not in st.session_state:
+    st.session_state.interpretaciones = {}
+    
+if "generadas" not in st.session_state:
+    st.session_state.generadas = False
+
 st.set_page_config(
-    page_title="Reporte Cienciométrico - Sección 5",
+    page_title="Contribución a los Objetivos de Desarrollo Sostenible (ODS)",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
