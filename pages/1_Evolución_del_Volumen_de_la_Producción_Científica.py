@@ -63,15 +63,18 @@ def display_image(path, caption):
 
 #Para mostrar la interpretacion de la imagen cuya llave y path pasan como parametro
 def display_interpretacion(img_key, img_path, img_caption=None):
+    #Si ya existe una interpretación generada para la imagen (el usuario ha presionado previamente el boton global)...
     if img_key in st.session_state.interpretaciones:
-        st.markdown(st.session_state.interpretaciones[img_key])
+        st.markdown(st.session_state.interpretaciones[img_key]) #se recupera desde el estado de sesión, y se muestra en la interfaz
 
-        if st.button("Regenerar", key=f"regen_{img_key}"):
-            st.session_state.interpretaciones[img_key] = st.empty()
+        #Junto a cada interpretación se incluye el boton para regenerar
+        if st.button("Regenerar", key=f"regen_{img_key}"): #Clave única
+            st.session_state.interpretaciones[img_key] = st.empty() #El texto previo se va visualmente
             with st.spinner("Regenerando..."):
-                st.session_state.interpretaciones[img_key] = generator(img_path, img_caption)
-            st.rerun()
-    else:
+                st.session_state.interpretaciones[img_key] = generator(img_path, img_caption) #Se manda a llamar nuevamente al modelo
+            st.rerun() #Actualiza la interfaz para mostrar el nuevo contenido generado
+            
+    else: #Si no existe... la funcion no muestra nada
         st.empty()
 
 st.title(main_title)
