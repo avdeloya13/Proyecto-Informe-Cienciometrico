@@ -21,10 +21,10 @@ main_title = "Evolución del Volumen de la Producción Científica"
 #Pestaña 1 imagenes
 sec_one_title = "Descripción General"
 
-image_one_path = "assets/images/sec_1_img_1.png"
+image_one_path = "assets/images/sec_1_img_1.jpeg"
 image_one_caption = "Producción científica del ICN en el Web of Science, 1968-2024"
 
-image_two_path = "assets/images/sec_1_img_2.png"
+image_two_path = "assets/images/sec_1_img_2.jpeg"
 image_two_caption = "Producción científica del ICN en el Web of Science, considerando sólo artículos y reviews y excluyendo grandes colaboraciones. 1968-2024"
 
 #Pestaña 2 imagenes
@@ -43,10 +43,10 @@ image_five_caption = "Total de artículos, sin considerar grandes colaboraciones
 sec_three_title = "Producción en Revistas con Factor de Impacto (Revistas JCR)"
 
 image_six_path = "assets/images/sec_1_img_6.png"
-image_six_caption = "Top 20 revistas donde más publica el ICN"
+image_six_caption = "Top revistas donde más publica el ICN"
 
-image_seven_path = "assets/images/sec_1_img_7.png"
-image_seven_caption = "Top 20 revistas donde más se publica"
+image_seven_path = "assets/images/sec_1_img_7.jpg"
+image_seven_caption = "Top revistas donde más se publica"
 
 image_eight_path = "assets/images/sec_1_img_8.png"
 image_eight_caption = "Ley de Bradford de las publicaciones científicas del ICN en todo el periodo"
