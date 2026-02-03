@@ -61,7 +61,7 @@ image_nine_caption = "Distribución de Género en la Red de Colaboración"
 def display_image(path, caption):
     """Muestra la imagen con un caption centrado."""
     if not os.path.exists(path):
-        st.warning(f"⚠️ Imagen no encontrada en: {path}. Asegúrate de que el directorio 'assets/images/' exista y contenga las imágenes.")
+        st.warning(f"Imagen no encontrada en: {path}. Asegúrate de que el directorio 'assets/images/' exista y contenga las imágenes.")
         st.info(f"Placeholder para: {caption}")
         st.image("https://placehold.co/600x460/cccccc/333333?text=IMAGEN+FALTANTE", caption=caption, width="stretch")
     else:
