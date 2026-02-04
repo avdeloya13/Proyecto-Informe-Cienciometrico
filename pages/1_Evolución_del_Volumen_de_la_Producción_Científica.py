@@ -69,7 +69,7 @@ def display_interpretacion(img_key, img_path, img_caption=None):
 
         #Junto a cada interpretación se incluye el boton para regenerar
         if st.button("Regenerar", key=f"regen_{img_key}"): #Clave única
-            st.session_state.interpretaciones[img_key] = st.empty() #El texto previo se va visualmente
+            st.session_state.interpretaciones[img_key] = st.empty() #El texto previo elimina del estado de sesión
             with st.spinner("Regenerando..."):
                 st.session_state.interpretaciones[img_key] = generator(img_path, img_caption) #Se manda a llamar nuevamente al modelo
             st.rerun() #Actualiza la interfaz para mostrar el nuevo contenido generado
