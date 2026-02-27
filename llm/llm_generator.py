@@ -32,7 +32,7 @@ def generator(image_path, img_caption=None):
     img_caption_text = ""
     if img_caption:
         img_caption_text = (
-            "La imagen cuenta con el siguiente caption descriptivo, el cual debe utilizarse únicamente como contexto temático general y no como fuente de datos numéricos o semánticos no visibles: " f"\"{img_caption}\"")
+            "La imagen cienciom é trica a analizar cuenta con el siguiente caption descriptivo, el cual debe utilizarse únicamente como contexto temático general y no como fuente de datos numéricos o semánticos no visibles: " f"\"{img_caption}\"")
 
     try:
         completion = client.chat.completions.create(
