@@ -68,7 +68,7 @@ def display_interpretacion(img_key, img_path, img_caption=None):
         st.markdown(st.session_state.interpretaciones[img_key]) #se recupera desde el estado de sesión, y se muestra en la interfaz
 
         #Junto a cada interpretación se incluye el boton para regenerar
-        if st.button("Regenerar", key=f"regen_{img_key}"): #Clave única
+        if st.button("Regenerar", key=f"regen_{img_key}"): #Clave única para el boton, asi el sistemqa sabe para que imagen se presionó el boton pues hay varios de regeneracion
             st.session_state.interpretaciones[img_key] = st.empty() #El texto previo elimina del estado de sesión
             with st.spinner("Regenerando..."):
                 st.session_state.interpretaciones[img_key] = generator(img_path, img_caption) #Se manda a llamar nuevamente al modelo
