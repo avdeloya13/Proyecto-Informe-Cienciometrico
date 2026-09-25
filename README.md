@@ -23,9 +23,9 @@ Aunque este repositorio se encuentra validado con gráficos cienciométricos del
 
 - **Gestión Dinámica de Estado:** La memoria de la interfaz preserva las interpretaciones generadas por el LLM entre pestañas y re-renderizados de la página.
 
-- **Regeneración Asíncrona y Selectiva:** Junto a cada bloque de texto generado por el LLM, se programó un activador ("Regenerar") con claves únicas (`key=f"regen_{img_key}"`). Esto permite limpiar el estado de un componente específico y volver a consultar al modelo para que realice otro análisis e interpretación.
+- **Regeneración Asíncrona y Selectiva:** Junto a cada bloque de texto generado por el LLM, se programó un activador con claves únicas que permite limpiar el estado de un componente específico y volver a consultar al modelo para que realice otro análisis e interpretación.
 
-- **Estructuración Determinista de Prompts:** Fue creado un prompt basado en roles (*role prompting*), buscando una redacción consistente con los datos visuales y eliminando texto meta-discursivo ("la imagen muestra").
+- **Estructuración Determinista de Prompts:** Fue creado un prompt basado en roles o *role prompting*, buscando una redacción consistente con los datos visuales y eliminando texto meta-discursivo.
 
 ---
 
