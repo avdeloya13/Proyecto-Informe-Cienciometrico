@@ -21,11 +21,11 @@ Aunque este repositorio se encuentra validado con gráficos cienciométricos del
 
 ## Características Clave
 
-- **Gestión Dinámica de Estado:** La memoria de la interfaz preserva las interpretaciones generadas por el LLM entre pestañas y re-renderizados de la página.
+- **Gestión dinámica de estado:** La memoria de la interfaz preserva las interpretaciones generadas por el LLM entre pestañas y re-renderizados de la página.
 
-- **Regeneración Asíncrona y Selectiva:** Junto a cada bloque de texto generado por el LLM, se programó un activador con claves únicas que permite limpiar el estado de un componente específico y volver a consultar al modelo para que realice otro análisis e interpretación.
+- **Regeneración asíncrona y selectiva:** Junto a cada bloque de texto generado por el LLM, se programó un activador con claves únicas que permite limpiar el estado de un componente específico y volver a consultar al modelo para que realice otro análisis e interpretación.
 
-- **Estructuración Determinista de Prompts:** Fue creado un prompt basado en roles o *role prompting*, buscando una redacción consistente con los datos visuales y eliminando texto meta-discursivo.
+- **Estructuración determinista de prompts:** Fue creado un prompt basado en roles o *role prompting*, buscando una redacción consistente con los datos visuales y eliminando texto meta-discursivo.
 
 ---
 
