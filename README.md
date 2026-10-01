@@ -3,6 +3,8 @@
 ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 
+---
+
 Un sistema desarrollado con **Streamlit** que automatiza el análisis e interpretación de datos visuales bibliométricos complejos. La plataforma actúa como un puente entre visualizaciones científicas complejas y la interpretación de datos. 
 
 Con el objetivo de realizar dicho análisis, se integró de forma local al modelo de lenguaje de gran escala (LLM) **Pixtral-12b** para traducir patrones visuales.
